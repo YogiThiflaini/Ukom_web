@@ -1,0 +1,157 @@
+{
+  "navbar.home": "Home",
+  "navbar.bookCars": "Book Cars",
+  "navbar.dashboard": "Dashboard",
+  "navbar.service" :"Service",
+  "homePageText.spanTitle": "Rent a car ",
+  "homePageText.title": "and find great deals with us (Surabaya only)",
+  "homePageText.description": "Choose from a collection of brand new cars, low prices are part of our every day offer.",
+  "homePageText.button": "Book online now!",
+  "featuredVehicles.title": "Featured Vehicles",
+  "featuredVehicles.description": "We have been working with clients in Surabaya.",
+  "whyChooseUs.title": "Why Choose Us",
+  "whyChooseUs.description": "Experience hassle-free car rentals with exceptional service and a wide selection of vehicles.",
+  "whyChooseUs.features": [
+    {
+      "title": "Wide Selection of Cars",
+      "description": "We offer a diverse range of cars to suit your needs and preferences. Whether you're looking for a compact car for city driving or a spacious SUV for a family trip, we have a wide selection of vehicles to choose from."
+    },
+    {
+      "title": "Competitive Prices",
+      "description": "We provide competitive prices that fit your budget. Our transparent pricing ensures that you get the best value for your money without compromising on quality or service."
+    },
+    {
+      "title": "Easy Booking Process",
+      "description": "Our user-friendly online booking system makes it quick and convenient to reserve your desired car. With just a few clicks, you can easily select your pickup location, choose your preferred car, and book it for your desired dates."
+    },
+    {
+      "title": "Trust and Reliability",
+      "description": "With years of experience in the car rental industry, we have established a reputation for trust and reliability. You can rely on us to provide quality vehicles, excellent service, and a seamless rental experience."
+    }
+  ],
+  "clientSpeak.title": "What Our Clients Say",
+  "clientSpeak.description": "We have been working with clients in Surabaya.",
+  "clientSpeak.testimonials": [
+    {
+      "heading": "Efficient Collaborating",
+      "text": "Outstanding car rental experience. Impressive teamwork and coordination. Effortless process, highly recommended.",
+      "name": "Adam Haris",
+      "title": "CEO at ABC Corporation"
+    },
+    {
+      "heading": "Intuitive Design",
+      "text": "Exceptional user experience. Intuitively designed for effortless navigation. Highly recommended for a seamless and user-friendly interface.",
+      "name": "Bima Saputra",
+      "title": "Marketing Manager"
+    },
+    {
+      "heading": "Mindblowing Service",
+      "text": "Mindblowing service that exceeds expectations. Unparalleled attention to detail. A service experience like no other.",
+      "name": "Andika",
+      "title": "Small Business Owner"
+    }
+  ],
+  "footer.copyright": "© Copyright. All rights reserved.",
+  "navbarLoginButtons.login": "Login",
+  "navbarLoginButtons.signup": "Sign up for free",
+  "linkItems.home": "Home",
+  "linkItems.bookCars": "Book Cars",
+  "linkItems.dashboard": "Dashboard",
+  "linkItems.aboutUs": "About Us",
+  "linkItems.termsOfService": "Terms of Service",
+  "menuList.home": "Home",
+  "menuList.english": "English",
+  "menuList.indo": "Indonesian",
+  "menuList.profile": "Profile",
+  "menuList.logout": "Logout",
+  "searchInput": "Search ...",
+  "carCard": {
+    "rentNow": "Rent now",
+    "notAvailable": "notAvailable",
+    "perDay": "/day",
+    "gearbox": "Gearbox",
+    "type": "Type",
+    "available": "Available",
+    "automatic": "automatic",
+    "manual": "manual",
+    "petrol": "petrol",
+    "diesel": "diesel",
+    "yes": "yes",
+    "no": "no",
+    "confirmRent": "Confirm rent"
+  },
+  "profile": {
+  "heading": "List All Your Rentals",
+  "brand": "Brand",
+  "model": "Model",
+  "type": "Type",
+  "price": "Price",
+  "gearbox": "Engine Type",
+  "rentalDate": "Rental Date",
+  "returnDate": "Return Date",
+  "noData": "No rentals available.",
+  "editProfile": "Edit Profile",
+  "modifyProfile": "Modify Your Profile",
+  "firstname": "First Name",
+  "lastname": "Last Name",
+  "phoneNumber": "Phone Number",
+  "cancel": "Cancel",
+  "save": "Save",
+  "cancelOrder": "Cancel",
+  "updateSuccess": "Profile updated successfully.",
+  "pays": "Payment",
+  "pay": "Pay",
+  "status": "Status",
+  "updateError": "Profile update failed, please try again.",
+  "topUpAmount": "Top-Up Amount",
+  "topUp": "Top-Up",
+  "topUpConfirmation": "Perform Top-Up",
+  "confirmTopUpAmount": "Confirm Top-Up Amount",
+  "paymentConfirmation": "Payment Confirmation",
+  "paymentAmount": "Payment Amount",
+  "pembayaranSewaKurang": "Payment amount short: ",
+  "paymentCompleted": "Payment Completed",
+  "paymentFullyPaid": "Payment has been settled.",
+  "close": "Close",
+  "balance": "Balance",
+  "confirm": "Confirm",
+    "confirmCancelOrder": "Would you like to cancel this order?",
+    "returned":"Returned",
+    "profilePhoto":"Update profile photo"
+}
+,
+  "form": {
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "telephone": "Telephone",
+    "email": "Email",
+    "alamat": "Address",
+    "password": "Password",
+    "createAccount": "Create account",
+    "signIn": "Sign In",
+    "welcome":"Welcome to DAYstore",
+    "loginMessage": "Don't have an account?",
+    "signupMessage": "Already a user?"
+  },
+  "header.greeting": "Hi, Admin",
+  "header.logout": "Logout",
+  "confirmRent": {
+    "title": "Confirm Rental",
+    "message": "Are you sure you want to proceed with this rental?",
+    "responsibility" :"I will be responsible",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+},
+"confirmLogout": {
+    "title": "Confirm Logout",
+    "message": "Are you sure you want to log out?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "confirmUpdate": {
+    "title": "Confirm Update",
+    "message": "Are you sure you want to update your profile with these changes?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "navbar.home": "Beranda",
+  "navbar.bookCars": "Pesan Mobil",
+  "navbar.dashboard": "Dashboard",
+  "navbar.service" :"Syarat & Ketentuan",
+  "homePageText.spanTitle": "Sewa mobil ",
+  "homePageText.title": "dan temukan penawaran menarik bersama kami",
+  "homePageText.description": "Pilih dari koleksi mobil baru, harga rendah adalah bagian dari penawaran kami sehari-hari.",
+  "homePageText.button": "Pesan online sekarang!",
+  "featuredVehicles.title": "Mobil Unggulan",
+  "featuredVehicles.description": "Kami telah bekerja dengan pelanggan di sekitar Surabaya.",
+  "whyChooseUs.title": "Mengapa Memilih Kami",
+  "whyChooseUs.description": "Pengalaman menyewa mobil tanpa masalah dengan layanan yang luar biasa dan beragam pilihan mobil.",
+  "whyChooseUs.features": [
+    {
+      "title": "Syarat Peminjaman Jelas",
+      "description": "Kami memiliki syarat penjaman yang jelas yaitu: berusia di atas 21 tahun, memiliki kartu identitas yang valid seperti kartu kredit atau kartu debit, salinan SIM atau KTP, kondisi kendaraan seperti saat disewa, jika telat mengembalikan akan ada biaya tambahan sekitar 100rb sampai 200rb per hari"
+    },
+    {
+      "title": "Harga Bersaing",
+      "description": "Kami memberikan harga yang kompetitif sesuai dengan anggaran Anda. Penetapan harga transparan kami memastikan Anda mendapatkan nilai terbaik untuk uang Anda tanpa mengorbankan kualitas atau layanan."
+    },
+    {
+      "title": "Proses Pemesanan Mudah",
+      "description": "Sistem pemesanan online yang ramah pengguna membuatnya cepat dan nyaman untuk memesan mobil yang Anda inginkan. Hanya dengan beberapa klik, Anda dapat memilih lokasi pengambilan, memilih mobil yang Anda inginkan, dan memesannya untuk tanggal yang Anda inginkan."
+    },
+    {
+      "title": "Kepercayaan dan Keandalan",
+      "description": "Dengan pengalaman beberapa bulan di industri penyewaan mobil, kami telah membangun reputasi kepercayaan dan keandalan. Anda dapat mengandalkan kami untuk menyediakan kendaraan berkualitas, layanan yang luar biasa, dan pengalaman menyewa yang mulus."
+    }
+  ],
+  "clientSpeak.title": "Apa Kata Pelanggan Kami",
+  "clientSpeak.description": "Kami telah bekerja dengan klien di sekitar Surabaya.",
+  "clientSpeak.testimonials": [
+    {
+      "heading": "Kolaborasi Efisien",
+      "text": "Pengalaman penyewaan mobil yang luar biasa. Kerjasama tim dan koordinasi yang mengesankan. Proses yang mudah, sangat direkomendasikan.",
+      "name": "Adam Haris",
+      "title": "CEO di ABC Corporation"
+    },
+    {
+      "heading": "Desain Intuitif",
+      "text": "Pengalaman pengguna yang luar biasa. Dirancang secara intuitif untuk navigasi yang mudah. Sangat direkomendasikan untuk antarmuka yang mulus dan ramah pengguna.",
+      "name": "Bima Saputra",
+      "title": "Manajer Pemasaran"
+    },
+    {
+      "heading": "Layanan Luar Biasa",
+      "text": "Layanan luar biasa yang melebihi ekspektasi. Perhatian terhadap detail yang tak tertandingi. Pengalaman layanan seperti tidak ada yang lain.",
+      "name": "Andika",
+      "title": "Pemilik Usaha Kecil"
+    }
+  ],
+  "footer.copyright": "© Copyright. All rights reserved.",
+  "navbarLoginButtons.login": "Masuk",
+  "navbarLoginButtons.signup": "Daftar Gratis",
+  "linkItems.home": "Beranda",
+  "linkItems.bookCars": "Pesan Mobil",
+  "linkItems.dashboard": "Dasbor",
+  "linkItems.aboutUs": "Tentang Kami",
+  "linkItems.termsOfService": "Syarat dan Ketentuan",
+  "menuList.home": "Beranda",
+  "menuList.english": "Inggris",
+  "menuList.indo": "indonesia",
+  "menuList.profile": "Profil",
+  "menuList.logout": "Keluar",
+  "searchInput": "Cari ...",
+  "carCard": {
+  "rentNow": "Sewa Sekarang",
+  "notAvailable": "Tidak Sedia",
+  "perDay": "/hari",
+  "gearbox": "Jenis Mesin",
+  "type": "Tipe",
+  "available": "Tersedia",
+  "automatic": "Otomatis",
+  "manual": "Manual",
+  "petrol": "Bensin",
+  "diesel": "Diesel",
+  "yes": "Ya",
+  "no": "Tidak",
+  "confirmRent": "Konfirmasi Sewa"
+},
+"profile": {
+  "heading": "Daftar semua sewaan Anda",
+  "brand": "Merek",
+  "model": "Model",
+  "type": "Tipe",
+  "price": "Harga",
+  "gearbox": "Jenis Mesin",
+  "rentalDate": "Tanggal Sewa",
+  "returnDate": "Tanggal Pengembalian",
+  "noData": "Tidak ada sewaan tersedia.",
+  "editProfile": "Ubah profil",
+  "modifyProfile": "Modifikasi profil Anda",
+  "firstname": "Nama Depan",
+  "lastname": "Nama Belakang",
+  "phoneNumber": "Nomor Telepon",
+  "cancel": "Batalkan",
+  "save": "Simpan",
+  "cancelOrder":"Batalkan",
+  "updateSuccess": "Profile berhasil diupdate.",
+  "pays":"Pembayaran",
+  "pay":"Bayar",
+  "status":"Status",
+  "updateError": "Profile gagal diupdate, silahkan coba lagi.",
+  "topUpAmount": "Lakukan Top-Up",
+  "topUp": "Top-Up",
+  "topUpConfirmation": "Konfirmasi Top-Up",
+  "confirmTopUpAmount": "Jumlah Top-Up yang akan dikonfirmasi",
+  "paymentConfirmation": "Konfirmasi Pembayaran",
+  "paymentAmount": "Jumlah Pembayaran",
+  "pembayaranSewaKurang": "Jumlah pembayaran kurang: ",
+  "paymentCompleted": "Pembayaran Selesai",
+  "paymentFullyPaid": "Pembayaran telah lunas.",
+  "close": "Tutup",
+  "balance": "Saldo Anda",
+  "confirm": "Konfirmasi",
+  "confirmCancelOrder": "Apakah anda akan membatalkan pesanan ini?",
+  "returned":"Pengembalian",
+  "profilePhoto":"Ubah foto profil"
+}
+,
+  "form": {
+      "firstname": "Nama Depan",
+      "lastname": "Nama Belakang",
+      "telephone": "Telepon",
+      "email": "Email",
+      "alamat": "Alamat",
+      "password": "Kata Sandi",
+      "createAccount": "Buat Akun",
+      "signIn": "Masuk",
+      "welcome": "Selamat datang di DAYstore",
+      "loginMessage": "Belum punya akun?",
+      "signupMessage": "Sudah menjadi pengguna?"
+    },
+    "header.greeting": "Halo, Admin",
+    "header.logout": "Keluar",
+  "confirmRent": {
+      "title": "Konfirmasi Penyewaan",
+      "message": "Apakah Anda yakin ingin melanjutkan penyewaan ini?",
+      "responsibility" :"Saya akan bertanggungjawab",
+      "cancel": "Batal",
+      "confirm": "Konfirmasi"
+      },
+  "confirmLogout": {
+    "title": "Konfirmasi Keluar",
+    "message": "Apakah Anda yakin ingin keluar dari akun Anda?",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi"
+  },
+  "confirmUpdate": {
+    "title": "Konfirmasi Update",
+    "message": "Apakah Anda yakin untuk mengubah akun Anda?",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi"
+  }
+    }
+    

@@ -1,0 +1,23 @@
+.custom-select {
+    position: relative;
+  }
+  
+  .custom-select option {
+    padding-right: 40px; /* Beri ruang untuk gambar di sebelah kanan label */
+  }
+  
+  .custom-select option::after {
+    content: attr(data-img);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right center;
+    display: inline-block;
+    width: 30px; /* Sesuaikan lebar gambar */
+    height: 20px; /* Sesuaikan tinggi gambar */
+    position: absolute;
+    right: 10px; /* Jarak dari kanan */
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Agar tidak mempengaruhi klik */
+  }
+  

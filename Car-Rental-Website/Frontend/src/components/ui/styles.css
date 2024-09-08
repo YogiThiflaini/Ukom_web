@@ -1,0 +1,87 @@
+@keyframes spreadIn {
+    0% {
+      opacity: 0;
+      transform: translate(var(--x), var(--y)) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+  }
+  
+  @keyframes bubbleUp {
+    0% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(-100vh);
+      opacity: 0;
+    }
+  }
+  
+  /* Container Utama */
+  .loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f8ff;
+  }
+  
+  /* Teks Loading */
+  .loading-text {
+    display: flex;
+    font-size: 5rem; /* Lebih besar dari sebelumnya */
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    z-index: 2;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Font lebih menarik */
+  }
+  
+  .loading-text span {
+    display: inline-block;
+    position: relative;
+    opacity: 0;
+    animation: spreadIn 1.5s ease-out forwards;
+    --x: calc(var(--random-x) * 100vw);
+    --y: calc(var(--random-y) * 100vh);
+    font-size: 6rem; /* Memperbesar ukuran font */
+    background: linear-gradient(45deg, #f44336, #ffeb3b, #4caf50, #2196f3); /* Gradasi Warna Palet */
+    background-size: 200% 200%; /* Ukuran latar belakang untuk transisi gradasi */
+    -webkit-background-clip: text; /* Menggunakan latar untuk warna teks */
+    -webkit-text-fill-color: transparent; /* Membuat teks transparan */
+    animation: spreadIn 1.5s ease-out forwards, colorShift 5s infinite; /* Menambahkan perubahan warna */
+  }
+  
+  /* Animasi Warna Palet */
+  @keyframes colorShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes bubbleUp {
+    0% {
+      transform: translate(0, 0) scale(0.5);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translate(var(--x-dir), var(--y-dir)) scale(var(--scale));
+      opacity: 0;
+    }
+  }
+  
+  /* Gelembung */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.6);
+    pointer-events: none;
+    animation: bubbleUp 10s infinite;
+  }
+  

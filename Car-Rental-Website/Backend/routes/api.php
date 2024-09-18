@@ -1,12 +1,13 @@
 <?php
 
+use Midtrans\Snap;
+use Midtrans\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\RentController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TopupHistoryController;
 use App\Http\Controllers\AccountRequestController;
 
@@ -64,6 +65,7 @@ Route::get('/verify-email/{token}', [UserController::class, 'verifyEmail']);
 
 Route::post('/resend-verification', [UserController::class, 'resendVerification']);
 Route::post('/users/{user_id}/update-balance', [UserController::class, 'updateBalance']);
+Route::post('/users/{user_id}/confirm-topup', [UserController::class, 'confirmTopUp']);
 
 Route::post('/rents/{rent}/pay', [RentController::class, 'pay']);
 Route::put('/users/{user_id}/update-banned-status', [UserController::class, 'updateBannedStatus']);
@@ -81,8 +83,10 @@ Route::get('requests', [AccountRequestController::class, 'index']);
 Route::get('/account-requests/{id}', [AccountRequestController::class, 'show']);
 Route::post('/account-requests', [AccountRequestController::class, 'store']);
 Route::put('/requests/{id}/approval', [AccountRequestController::class, 'updateApproval']);
+Route::delete('/historys/{id}', [TopupHistoryController::class, 'destroy']);
+Route::delete('/Requests/{id}', [AccountRequestController::class, 'destroy']);
 
-Route::post('/payment', [PaymentController::class, 'create']);
-Route::post('/verify-token', [PaymentController::class, 'verifyToken']);
-Route::put('/payment/{id}/approve', [PaymentController::class, 'adminApproval']);
-Route::get('/payments', [PaymentController::class, 'index']);
+Route::get('cars/{car_id}/comments', [CommentController::class, 'getComments']);
+Route::post('comments', [CommentController::class, 'store']);
+Route::delete('comments/{id}', [CommentController::class, 'destroy']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);

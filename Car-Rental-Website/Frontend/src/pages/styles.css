@@ -1,75 +1,31 @@
-@keyframes moveCircle {
+/* Container Utama untuk halaman login dengan background animasi */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+  position: relative;
+  overflow: auto;
+  background-color: #f0f8ff; /* Warna latar belakang */
+}
+
+/* Gelembung yang bergerak */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.6); /* Ini akan di override oleh backgroundColor inline */
+  pointer-events: none;
+  animation: bubbleUp 10s infinite; /* Animasi gelembung */
+}
+
+@keyframes bubbleUp {
   0% {
-    transform: translate(-400px, -400px); /* Start just outside the top-left corner */
-  }
-  10% {
-    transform: translate(0, -400px); /* Move to the top-left corner */
-  }
-  20% {
-    transform: translate(calc(100vw - 60px), -400px); /* Move to the top-right corner */
-  }
-  30% {
-    transform: translate(calc(100vw - 60px), 0); /* Move to the right edge */
-  }
-  40% {
-    transform: translate(calc(100vw - 60px), calc(100vh - 60px)); /* Move to the bottom-right corner */
-  }
-  50% {
-    transform: translate(0, calc(100vh - 60px)); /* Move to the bottom-left corner */
-  }
-  60% {
-    transform: translate(-400px, calc(100vh - 60px)); /* Move to the left edge */
-  }
-  70% {
-    transform: translate(-400px, 0); /* Move to the top-left corner */
-  }
-  80% {
-    transform: translate(calc(50vw - 60px), calc(50vh - 60px)); /* Move to the center */
-  }
-  90% {
-    transform: translate(calc(50vw - 60px), -400px); /* Move to just outside the top center */
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0.7;
   }
   100% {
-    transform: translate(-400px, -400px); /* Return to start position */
+    transform: translate(var(--x-dir), var(--y-dir)) scale(var(--scale));
+    opacity: 0;
   }
-}
-
-@keyframes changeColor {
-  0% { background-color: rgba(255, 0, 0, 0.4); } /* Red with 40% opacity */
-  25% { background-color: rgba(0, 255, 0, 0.4); } /* Green with 40% opacity */
-  50% { background-color: rgba(0, 0, 255, 0.4); } /* Blue with 40% opacity */
-  75% { background-color: rgba(255, 0, 255, 0.4); } /* Magenta with 40% opacity */
-  100% { background-color: rgba(255, 0, 0, 0.4); } /* Red with 40% opacity */
-}
-
-.circle {
-  position: absolute;
-  border-radius: 50%; /* Perfect circle */
-  width: 500px;
-  height: 500px;
-  background: rgba(255, 0, 0, 0.4); /* Default color with 40% opacity */
-  animation: moveCircle 4s infinite linear, changeColor 3s infinite; /* 4s duration for moveCircle */
-}
-
-.circle:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.circle:nth-child(2) {
-  animation-delay: 2s; /* Staggering animations */
-}
-
-.circle:nth-child(3) {
-  animation-delay: 4s; /* Staggering animations */
-}
-
-.circle:nth-child(4) {
-  animation-delay: 6s; /* Staggering animations */
-}
-
-.loading-container {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #ffffff; /* White background */
 }

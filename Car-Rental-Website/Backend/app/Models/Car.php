@@ -25,4 +25,10 @@ class Car extends Model
     {
         return $this->hasMany(Rent::class);
     }
+
+    public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
 }

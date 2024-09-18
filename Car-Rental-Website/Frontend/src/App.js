@@ -15,7 +15,8 @@ import ProtectedRoute from './ProtectedRoute';
 import Service from './pages/SyaratPage';
 import PasswordForm from './pages/ResetPassword';
 import LoadingSpinner from "./components/ui/loading-spinner";
-import Topup from './pages/TopUpForm';
+import Order from './pages/OrderPage';
+import Comment from './pages/FilteredRentTable';
 
 function App() {
   const [isLoading, setLoading] = useState(true);
@@ -41,7 +42,8 @@ function App() {
           <Route path="verify" element={<Verify />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="login" element={<Login />} />
-          <Route path="topup" element={<Topup />} />
+          <Route path="order" element={<Order />} />
+          <Route path="comment" element={<Comment />} />
           <Route path="reset-password" element={<PasswordForm />} />
           <Route path="cars" element={<BookCars />} />
           <Route path="cars/:id" element={<Rent />} />

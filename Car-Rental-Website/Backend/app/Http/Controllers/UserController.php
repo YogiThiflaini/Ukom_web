@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Midtrans\Snap;
+use Midtrans\Config;
 
 class UserController extends Controller
 {
@@ -398,34 +400,72 @@ public function validateTopUpToken(Request $request, $user_id)
 
         return response()->json(['message' => 'Kode OTP telah dikirim ulang ke email Anda.']);
     }
+    
     public function updateBalance(Request $request, $user_id)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'amount' => 'required|numeric|min:0',
         ]);
-
-        // Temukan pengguna berdasarkan ID
+    
+        Config::$serverKey = 'SB-Mid-server-cqTlR_sI9mCoEyt4zzWWLqji'; 
+        Config::$isProduction = false; 
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+    
         $user = User::findOrFail($user_id);
-
-        // Perbarui saldo pengguna
-        $user->saldo_dana += $validatedData['amount'];
-        $user->save();
-
-        // Simpan riwayat top-up
-        TopupHistory::create([
-            'user_id' => $user->id,
-            'topup_amount' => $validatedData['amount'],
-            'topup_date' => now(),
-        ]);
-
-        // Return response dengan data pengguna yang diperbarui
-        return response()->json([
-            'data' => $user,
-            'message' => 'Saldo berhasil diperbarui dan riwayat top-up telah dicatat.'
-        ], 200);
+    
+        $params = [
+            'transaction_details' => [
+                'order_id' => uniqid(),
+                'gross_amount' => $validatedData['amount'],
+            ],
+            'customer_details' => [
+                'first_name' => $user->firstname,
+                'last_name' => $user->lastname,
+                'email' => $user->email,
+                'phone' => $user->telephone,
+            ],
+        ];
+    
+        try {
+            $snapToken = Snap::getSnapToken($params);
+    
+            return response()->json([
+                'snapToken' => $snapToken,
+                'message' => 'Transaksi berhasil, menunggu pembayaran.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal membuat transaksi pembayaran.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+    
+    public function confirmTopUp(Request $request, $user_id)
+{
+    $validatedData = $request->validate([
+        'amount' => 'required|numeric|min:0',
+    ]);
 
+    $user = User::findOrFail($user_id);
+
+    // Perbarui saldo pengguna
+    $user->saldo_dana += $validatedData['amount'];
+    $user->save();
+
+    // Simpan riwayat top-up
+    TopupHistory::create([
+        'user_id' => $user->id,
+        'topup_amount' => $validatedData['amount'],
+        'topup_date' => now(),
+    ]);
+
+    return response()->json([
+        'message' => 'Saldo berhasil diperbarui.',
+        'data' => $user,
+    ], 200);
+}
 
     public function destroy($id)
     {

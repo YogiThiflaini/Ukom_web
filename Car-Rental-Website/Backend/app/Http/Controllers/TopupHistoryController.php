@@ -72,5 +72,18 @@ public function getUserTopupHistory($user_id)
     return response()->json($topupHistory, 200);
 }
 
+public function destroy($id)
+{
+    $rent = TopupHistory::find($id);
+
+    if (!$rent) {
+        return response()->json(['success' => false, 'message' => 'History topup tidak ditemukan'], 404);
+    }
+
+    $rent->delete();
+
+    return response()->json(['success' => true, 'message' => 'History topup berhasil dihapus!']);
+}
+
 
 }

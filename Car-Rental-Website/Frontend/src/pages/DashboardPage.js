@@ -43,6 +43,8 @@ import CreateItemDrawer from "../components/dashboard/create-drawer";
 import SearchContext from "../SearchContext";
 import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
+import Statistics from './RentStatistics';
+import Admin from './Admin';
 
 function Dashboard() {
   const { t } = useTranslation();
@@ -50,14 +52,10 @@ function Dashboard() {
   const { searchResults, setSearchResults } = useContext(SearchContext);
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([
-    "no",
-    "id",
-    "brand",
-    "model",
-    "gearbox",
-    "type",
-    "price",
-    "availability",
+    <>
+    <Statistics/>
+    <Admin />
+    </>
   ]);
   const [type, setType] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -201,22 +199,15 @@ function Dashboard() {
       }).catch(error => {
         console.error("Error fetching requests data:", error);
       });
-    }
-    else if (type === "topups") { // Added case for 'topups'
-      axios.get("http://127.0.0.1:8000/api/payments").then((response) => {
+    }else if (type === "") {
         setHeader([
-          "no",
-          "id",
-          "user_id",
-          "metode_pembayaran",
-          "email",
-          "admin_approval"
+          <>
+          <Statistics/>
+          <Admin />
+          </>
         ]);
-        setData(response.data);
-        setType("topups");
-      }).catch((error) => {
-        console.error("Error fetching payments data:", error);
-      });
+        setData([]);
+        setType("");
     }
   };
 
@@ -406,7 +397,7 @@ function Dashboard() {
                         placeholder="Filter berdasarkan email"
                         value={firstnameFilter}
                         onChange={(e) => setFirstnameFilter(e.target.value)}
-                      />
+                        />
                     </Box>
                     <Box>
                     <FormLabel htmlFor="status">Status:</FormLabel>
@@ -414,7 +405,7 @@ function Dashboard() {
                       placeholder="Filter berdasarkan Status"
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                    >
+                      >
                       <option value="">All</option>
                       <option value="lunas">Lunas</option>
                       <option value="belum_lunas">Belum Lunas</option>
@@ -427,7 +418,7 @@ function Dashboard() {
                       placeholder="Filter berdasarkan Returned"
                       value={returnedFilter}
                       onChange={(e) => setReturnedFilter(e.target.value)}
-                    >
+                      >
                       <option value="">All</option>
                       <option value="belum_diambil">Belum Diambil</option>
                       <option value="sedang_disewa">Sedang Disewa</option>
@@ -440,7 +431,7 @@ function Dashboard() {
                       placeholder="Filter pembatalan"
                       value={cancelFilter}
                       onChange={(e) => setCancelFilter(e.target.value)}
-                    >
+                      >
                       <option value="">All</option>
                       <option value={0}>Jadi Disewa</option>
                       <option value={1}>Dibatalkan</option>
@@ -455,7 +446,7 @@ function Dashboard() {
                         placeholder="Mulai tanggal rental"
                         value={rentalDateRange.start}
                         onChange={(e) => setRentalDateRange((prev) => ({ ...prev, start: e.target.value }))}
-                      />
+                        />
                     </Box>
                     <Box>
                       <FormLabel htmlFor="rentalEnd">Tanggal Rental Sampai:</FormLabel>
@@ -465,12 +456,21 @@ function Dashboard() {
                         placeholder="Akhir tanggal rental"
                         value={rentalDateRange.end}
                         onChange={(e) => setRentalDateRange((prev) => ({ ...prev, end: e.target.value }))}
-                      />
+                        />
                     </Box>
                   </Flex>
                     </>
                     )}
                     {type === "users" && (
+                    <>
+                    <Box>
+                      <FormLabel htmlFor="email">Cari Email Topup:</FormLabel>
+                      <Input
+                        placeholder="Filter berdasarkan email"
+                        value={firstnameFilter}
+                        onChange={(e) => setFirstnameFilter(e.target.value)}
+                      />
+                    </Box>
                     <Flex mb={4} justify="space-between">
                     <Box>
                       <FormLabel htmlFor="createdStart">Tanggal Dibuat Dari:</FormLabel>
@@ -490,9 +490,10 @@ function Dashboard() {
                         placeholder="Akhir tanggal dibuat"
                         value={createdAtRange.end}
                         onChange={(e) => setCreatedAtRange((prev) => ({ ...prev, end: e.target.value }))}
-                      />
+                        />
                     </Box>
                   </Flex>
+                  </>
                     )}
                     {type === "cars" && (
                     <>
@@ -532,21 +533,9 @@ function Dashboard() {
                     />
                   </Box>
                   )}
-                  {type === "Requests" && (
+                  {/* {type === "Requests" && (
                     <>
                     <Stack spacing={4} mb={4} direction="row">
-                    <Button
-                      colorScheme={type === "Requests" ? "blue" : "gray"}
-                      onClick={() => handleButtonClick("Requests")}
-                    >
-                      Status Akun
-                    </Button>
-                    <Button
-                      colorScheme={type === "topups" ? "blue" : "gray"}
-                      onClick={() => handleButtonClick("topups")}
-                    >
-                      Konfirmasi Topup
-                    </Button>
                     <Box>
                     <FormLabel htmlFor="approval">Tanggapan:</FormLabel>
                     <Select
@@ -562,38 +551,7 @@ function Dashboard() {
                     </Box>
                   </Stack>
                     </>
-                  )}
-                  {type === "topups" && (
-                    <>
-                    <Stack spacing={4} mb={4} direction="row">
-                    <Button
-                      colorScheme={type === "Requests" ? "blue" : "gray"}
-                      onClick={() => handleButtonClick("Requests")}
-                    >
-                      Status Akun
-                    </Button>
-                    <Button
-                      colorScheme={type === "topups" ? "blue" : "gray"}
-                      onClick={() => handleButtonClick("topups")}
-                    >
-                      Konfirmasi Topup
-                    </Button>
-                    <Box>
-                    <FormLabel htmlFor="AdminApproval">Tanggapan:</FormLabel>
-                    <Select
-                      placeholder="Filter persetujuan topup"
-                      value={adappFilter}
-                      onChange={(e) => setAdappFilter(e.target.value)}
-                    >
-                      <option value="">All</option>
-                      <option value={0}>Belum ditanggapi</option>
-                      <option value={1}>Disetujui</option>
-                      <option value={2}>Ditolak</option>
-                    </Select>
-                    </Box>
-                  </Stack>
-                    </>
-                  )}
+                  )} */}
                   </Flex>
                   <Table variant="striped" size={{ base: "sm", md: "md" }}>
                     <Thead>
@@ -601,7 +559,9 @@ function Dashboard() {
                         {header.map((title) => (
                           <Th key={title}>{title}</Th>
                         ))}
+                        {type !== ""&&(
                         <Th>operations</Th>
+                        )}
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -753,7 +713,7 @@ function Dashboard() {
                                   );
                                 } 
                                 else if (column === "approval") {
-                                  console.log(`Column: ${column}, Approval Value: ${item[column]}`); // Log kolom dan nilai
+                                  // console.log(`Column: ${column}, Approval Value: ${item[column]}`); // Log kolom dan nilai
                     
                                   return (
                                     <Td key={item.id}>

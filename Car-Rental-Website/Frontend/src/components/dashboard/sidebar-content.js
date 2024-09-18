@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import NavItem from "./nav-item";
 import { FaUserFriends, FaQuestionCircle } from "react-icons/fa";
+import { FaClipboardList,FaChartArea } from "react-icons/fa";
 import { GiCarKey } from "react-icons/gi";
 import { RiCarLine } from "react-icons/ri";
 import { HamburgerIcon, EditIcon } from "@chakra-ui/icons";
@@ -52,6 +53,9 @@ const SidebarContent = ({ handleData, ...props }) => {
           color="gray.600"
           aria-label="Main Navigation"
         >
+          <NavItem icon={FaChartArea} onClick={() => handleData("")}>
+            Statistik
+          </NavItem>
           <NavItem icon={FaUserFriends} onClick={() => handleData("Users")}>
             Users
           </NavItem>
@@ -61,7 +65,7 @@ const SidebarContent = ({ handleData, ...props }) => {
           <NavItem icon={GiCarKey} onClick={() => handleData("Rents")}>
             Rents
           </NavItem>
-          <NavItem icon={EditIcon} onClick={() => handleData("Historys")}>
+          <NavItem icon={FaClipboardList} onClick={() => handleData("Historys")}>
             History
           </NavItem>
           <NavItem icon={FaQuestionCircle} onClick={() => handleData("Requests")}>
@@ -104,6 +108,9 @@ const SidebarContent = ({ handleData, ...props }) => {
               color="gray.600"
               aria-label="Main Navigation"
             >
+              <NavItem icon={FaChartArea} onClick={() => handleData("")}>
+                Statistik
+              </NavItem>
               <NavItem icon={FaUserFriends} onClick={() => handleData("Users")}>
                 Users
               </NavItem>
@@ -113,7 +120,7 @@ const SidebarContent = ({ handleData, ...props }) => {
               <NavItem icon={GiCarKey} onClick={() => handleData("Rents")}>
                 Rents
               </NavItem>
-              <NavItem icon={EditIcon} onClick={() => handleData("Historys")}>
+              <NavItem icon={FaClipboardList} onClick={() => handleData("Historys")}>
                 History
               </NavItem>
               <NavItem icon={FaQuestionCircle} onClick={() => handleData("Requests")}>

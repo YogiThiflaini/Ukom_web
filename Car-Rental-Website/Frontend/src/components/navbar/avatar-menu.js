@@ -30,9 +30,11 @@ import { useState } from "react";
 const AvatarMenu = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
-  const fullname = localStorage.getItem("firstname") + " " + localStorage.getItem("lastname");
+  const fullname =
+    localStorage.getItem("firstname") + " " + localStorage.getItem("lastname");
   const email = localStorage.getItem("email");
   const profilePhoto = localStorage.getItem("profile_photo");
+  const level = localStorage.getItem("level");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const to_route = useNavigate();
@@ -40,14 +42,15 @@ const AvatarMenu = () => {
     to_route(route);
   };
 
-  console.log(email);
-  console.log(profilePhoto);
+  // console.log(email);
+  // console.log(profilePhoto);
 
   const handleLogout = () => {
     axios
       .get("http://127.0.0.1:8000/api/logout")
       .then((response) => {
         localStorage.clear();
+        window.location.reload();
         navigate("/");
         toast({
           title: "Logout Successful",
@@ -89,12 +92,7 @@ const AvatarMenu = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar
-                size={"sm"}
-                src={profilePhoto ? profilePhoto : undefined} // Gunakan gambar profil jika ada
-                icon={!profilePhoto ? <FaUser /> : undefined} // Gunakan FaUser jika tidak ada gambar profil
-                bg={!profilePhoto ? "transparent":"gray.500"} // Latar belakang abu-abu jika tidak ada profil
-              />
+              <Avatar size={"sm"} name={fullname} src={profilePhoto} />
             </MenuButton>
             <MenuList>
               <Box mt={4} textAlign="center">
@@ -107,7 +105,7 @@ const AvatarMenu = () => {
               <MenuItem onClick={() => navigate("/")}>
                 {t("menuList.home")}
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => changeLanguage("en")}
                 style={{ display: currentLanguage === "en" ? "none" : "block" }}
               >
@@ -118,10 +116,18 @@ const AvatarMenu = () => {
                 style={{ display: currentLanguage === "fr" ? "none" : "block" }}
               >
                 {t("menuList.indo")}
-              </MenuItem>
+              </MenuItem> */}
+              {level === "user" && (
+                <MenuItem onClick={() => navigate("/order")}>Orders</MenuItem>
+              )}
               <MenuItem onClick={() => navigate("/profile")}>
                 {t("menuList.profile")}
               </MenuItem>
+              {level === "user" && (
+                <MenuItem onClick={() => navigate("/comment")}>
+                  Reviews
+                </MenuItem>
+              )}
               <MenuDivider />
               <MenuItem onClick={onOpen}>{t("menuList.logout")}</MenuItem>
             </MenuList>

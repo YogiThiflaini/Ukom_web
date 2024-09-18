@@ -81,6 +81,8 @@ public function updateApproval(Request $request, $id)
     // Log the updated request data
     Log::info("Updated request data:", (array)$updatedRequest);
 
+    // Hapus permintaan
+    DB::table('account_requests')->where('id', $id)->delete();
     // Return success response
     return response()->json([
         'message' => 'Approval status updated successfully.',
@@ -112,4 +114,17 @@ public function updateApproval(Request $request, $id)
 
         return response()->json(['success' => true, 'data' => $accountRequest], 200);
     }
+
+    public function destroy($id)
+{
+    $rent = AccountRequest::find($id);
+
+    if (!$rent) {
+        return response()->json(['success' => false, 'message' => 'Permintaan tidak ditemukan'], 404);
+    }
+
+    $rent->delete();
+
+    return response()->json(['success' => true, 'message' => 'Permintaan berhasil dihapus!']);
+}
 }

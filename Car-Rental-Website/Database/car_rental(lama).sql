@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Sep 2024 pada 08.06
+-- Waktu pembuatan: 08 Sep 2024 pada 08.58
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `account_requests` (
 
 INSERT INTO `account_requests` (`id`, `user_id`, `email`, `description`, `approval`, `created_at`, `updated_at`) VALUES
 (1, 24, 'dafarafansyah07@gmail.com', 'bisa tolong aktifkan akun saya', 2, '2024-09-06 18:56:39', '2024-09-06 20:55:43'),
-(3, 45, 'akukurus22@gmail.com', 'Saya ingin menyewa lagi', 0, '2024-09-13 22:13:18', '2024-09-13 22:13:18');
+(2, 54, 'ythiflaini@gmail.com', 'tolonggggg', 1, '2024-09-06 22:18:31', '2024-09-06 22:18:31');
 
 -- --------------------------------------------------------
 
@@ -72,41 +72,10 @@ INSERT INTO `cars` (`id`, `photo1`, `photo2`, `brand`, `model`, `fuel_type`, `pr
 (6, 'https://www.oneclickdrive.com/car-for-rent/slider-desktop/Mercedes-Benz_Mayback-S500_2020_10864_10864_3100348325-5_small.jpg?vr=3', 'https://img.gocar.be/v7/_cloud_wordpress_/2019/06/mercedes-maybach_s_650_24.jpg', 'Mitsubishi', 2019, 'bensin', 850000, 'automatic', 1),
 (14, 'http://127.0.0.1:8000/upload/1715649155_honda11.jpg', 'http://127.0.0.1:8000/upload/1715649155_honda1.jpg', 'Honda', 2021, 'bensin', 870000, 'automatic', 1),
 (16, 'http://127.0.0.1:8000/upload/1715649778_toyota11.jpg', 'http://127.0.0.1:8000/upload/1715649778_toyota1.jpg', 'Toyota', 2021, 'diesel', 850000, 'manuel', 1),
-(20, 'http://127.0.0.1:8000/upload/1715667789_back2.webp', 'http://127.0.0.1:8000/upload/1715667789_front2.webp', 'Toyota', 2021, 'diesel', 890000, 'automatic', 0),
+(20, 'http://127.0.0.1:8000/upload/1715667789_back2.webp', 'http://127.0.0.1:8000/upload/1715667789_front2.webp', 'Toyota', 2021, 'diesel', 890000, 'automatic', 1),
 (26, 'http://127.0.0.1:8000/upload/1723685256_toyota2.jpg', 'http://127.0.0.1:8000/upload/1723685256_toyota1.png', 'Toyota', 2020, 'bensin', 880000, 'automatic', 1),
-(30, 'http://127.0.0.1:8000/upload/1725374364_suzuki2.jpg', 'http://127.0.0.1:8000/upload/1725374364_suzuki1.png', 'Suzuki', 2021, 'bensin', 900000, 'manual', 1),
-(31, 'http://127.0.0.1:8000/upload/1726290111_toyota12.jpg', 'http://127.0.0.1:8000/upload/1726290111_toyota11.jpg', 'Toyota', 2021, 'bensin', 900000, 'automatic', 0);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `comments`
---
-
-CREATE TABLE `comments` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `firstname` varchar(100) DEFAULT NULL,
-  `lastname` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `car_id` int(11) NOT NULL,
-  `komentar` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `comments`
---
-
-INSERT INTO `comments` (`id`, `user_id`, `firstname`, `lastname`, `email`, `car_id`, `komentar`, `created_at`, `updated_at`) VALUES
-(1, 10, 'Nando', 'Salam', 'nando@gmail.com', 5, 'bagus', '2024-09-13 21:11:00', '2024-09-13 21:11:00'),
-(3, 10, 'Nando', 'Salam', 'nando@gmail.com', 5, 'Saya suka desainya', '2024-09-13 21:59:41', '2024-09-13 21:59:41'),
-(4, 10, 'Nando', 'Salam', 'nando@gmail.com', 6, 'Terimakasih, mobilnya nyaman sekali', '2024-09-13 22:04:41', '2024-09-13 22:04:41'),
-(5, 45, 'zera', 'ansyah', 'akukurus22@gmail.com', 14, 'Saya suka cara dengan kenyamanan mobilnya', '2024-09-13 22:06:58', '2024-09-13 22:06:58'),
-(6, 45, 'zera', 'ansyah', 'akukurus22@gmail.com', 6, 'Mobil dalam kondisi bagus, saya beruntung menyewa mobil disini', '2024-09-13 22:11:42', '2024-09-13 22:11:42'),
-(7, 10, 'Nando', 'Salam', 'nando@gmail.com', 26, 'nyaman saat dibawa berkendara, terimakasih atas sewaannya DAYstore', '2024-09-13 22:39:09', '2024-09-13 22:39:09'),
-(9, 10, 'Nando', 'Salam', 'nando@gmail.com', 5, 'kuyt', '2024-09-13 22:39:25', '2024-09-13 22:39:25');
+(29, 'http://127.0.0.1:8000/upload/1725260716_honda2.jpeg', 'http://127.0.0.1:8000/upload/1725260716_honda1.jpeg', 'Honda', 2022, 'bensin', 1000000, 'manual', 1),
+(30, 'http://127.0.0.1:8000/upload/1725374364_suzuki2.jpg', 'http://127.0.0.1:8000/upload/1725374364_suzuki1.png', 'Suzuki', 2021, 'bensin', 900000, 'manual', 1);
 
 -- --------------------------------------------------------
 
@@ -148,6 +117,33 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2023_02_06_172423_create_cars_table', 1),
 (6, '2023_02_06_172523_create_rentals_table', 1),
 (7, '2024_08_20_001429_add_email_verification_codes_email_verified_ats_on_users_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `token` varchar(40) NOT NULL,
+  `jumlah_saldo` decimal(15,2) NOT NULL,
+  `metode_pembayaran` varchar(255) NOT NULL,
+  `card_serial` varchar(255) DEFAULT NULL,
+  `nama_bank` varchar(255) DEFAULT NULL,
+  `admin_approval` int(25) NOT NULL DEFAULT 0,
+  `token_verified` int(25) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `payments`
+--
+
+INSERT INTO `payments` (`id`, `user_id`, `token`, `jumlah_saldo`, `metode_pembayaran`, `card_serial`, `nama_bank`, `admin_approval`, `token_verified`, `created_at`, `updated_at`) VALUES
+(5, 54, 'IHdDzIwcSJ', 10000.00, 'Bank Transfer', NULL, 'BRI', 1, 1, '2024-09-07 21:19:37', '2024-09-07 23:20:53');
 
 -- --------------------------------------------------------
 
@@ -211,9 +207,7 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (36, 'App\\Models\\User', 51, 'main', '802437965ff1022a423b5e1af6448433a6a574486c8c6d7f9047124fd51aa6c7', '[\"*\"]', NULL, NULL, '2024-09-04 18:51:10', '2024-09-04 18:51:10'),
 (37, 'App\\Models\\User', 52, 'main', '52e1d0dcaf939b4329ac49f98a32209b9dafcb3b9f3ef9b5a371e34afbb438cc', '[\"*\"]', NULL, NULL, '2024-09-04 20:20:22', '2024-09-04 20:20:22'),
 (38, 'App\\Models\\User', 53, 'main', '97301a3f68b91763ff5692fa18153bd8a5575576777f068c27f5e3eb51b45356', '[\"*\"]', NULL, NULL, '2024-09-06 05:45:24', '2024-09-06 05:45:24'),
-(39, 'App\\Models\\User', 54, 'main', '8283ff57d422bc2ce6d377acbba6f5075a47b6aece13df57d5f0cb7fb1c8fb4d', '[\"*\"]', NULL, NULL, '2024-09-06 22:16:31', '2024-09-06 22:16:31'),
-(40, 'App\\Models\\User', 11, 'main', '519a5585a38854f608150fe4238eade08eefb93becc50045e1044ff63ba8538c', '[\"*\"]', NULL, NULL, '2024-09-09 23:39:17', '2024-09-09 23:39:17'),
-(41, 'App\\Models\\User', 54, 'main', 'c391ea758c0808a1290fcdd637c02cc12163f42652ad3f69f0fd435f1a114290', '[\"*\"]', NULL, NULL, '2024-09-10 06:38:41', '2024-09-10 06:38:41');
+(39, 'App\\Models\\User', 54, 'main', '8283ff57d422bc2ce6d377acbba6f5075a47b6aece13df57d5f0cb7fb1c8fb4d', '[\"*\"]', NULL, NULL, '2024-09-06 22:16:31', '2024-09-06 22:16:31');
 
 -- --------------------------------------------------------
 
@@ -242,16 +236,13 @@ CREATE TABLE `rentals` (
 
 INSERT INTO `rentals` (`id`, `rental_date`, `return_date`, `price`, `user_id`, `car_id`, `pays`, `status`, `returned`, `cancel`, `created_at`, `updated_at`) VALUES
 (19, '2024-09-25', '2024-09-28', 3000000, 10, 5, 3000000, 'lunas', 'sudah_kembali', 0, '2024-08-21 06:31:18', '2024-08-24 22:37:47'),
-(24, '2024-09-01', '2024-09-02', 850000, 10, 6, 850000, 'lunas', 'sudah_kembali', 0, '2024-08-22 06:31:52', '2024-09-03 16:12:53'),
+(24, '2024-09-01', '2024-09-02', 850000, 10, 6, 850000, 'lunas', 'belum_diambil', 0, '2024-08-22 06:31:52', '2024-09-03 16:12:53'),
 (28, '2024-09-26', '2024-09-28', 900000, 10, 6, 900000, 'lunas', 'belum_diambil', 0, '2024-09-01 06:32:04', '2024-09-03 16:12:53'),
-(32, '2024-09-04', '2024-09-07', 2550000, 45, 6, 2550000, 'lunas', 'sudah_kembali', 0, '2024-09-01 06:32:11', '2024-09-13 22:07:10'),
-(33, '2024-09-09', '2024-09-11', 1740000, 45, 14, 1740000, 'lunas', 'sudah_kembali', 0, '2024-09-01 06:32:16', '2024-09-02 00:02:22'),
+(32, '2024-09-04', '2024-09-07', 2550000, 45, 6, 0, 'belum_bayar', 'belum_diambil', 0, '2024-09-01 06:32:11', '2024-09-02 00:01:06'),
+(33, '2024-09-09', '2024-09-11', 1740000, 45, 14, 1740000, 'lunas', 'belum_diambil', 0, '2024-09-01 06:32:16', '2024-09-02 00:02:22'),
 (36, '2024-09-20', '2024-09-21', 870000, 10, 14, 0, 'belum_bayar', 'belum_diambil', 1, '2024-09-05 19:04:01', '2024-09-05 19:19:11'),
 (37, '2024-09-28', '2024-09-29', 880000, 10, 26, 880000, 'lunas', 'belum_diambil', 0, '2024-09-05 19:04:19', '2024-09-06 22:50:47'),
-(38, '2024-09-19', '2024-09-20', 1000000, 10, 5, 0, 'belum_bayar', 'belum_diambil', 1, '2024-09-06 06:48:25', '2024-09-06 22:41:28'),
-(39, '2024-09-11', '2024-09-12', 880000, 10, 26, 880000, 'lunas', 'sudah_kembali', 0, '2024-09-09 23:36:21', NULL),
-(40, '2024-09-19', '2024-09-20', 900000, 11, 30, 0, 'belum_bayar', 'belum_diambil', 1, '2024-09-10 18:14:31', '2024-09-10 19:04:36'),
-(41, '2024-10-09', '2024-10-11', 1800000, 10, 31, 0, 'belum_bayar', 'belum_diambil', 0, '2024-09-13 22:46:04', NULL);
+(38, '2024-09-19', '2024-09-20', 1000000, 10, 5, 0, 'belum_bayar', 'belum_diambil', 1, '2024-09-06 06:48:25', '2024-09-06 22:41:28');
 
 -- --------------------------------------------------------
 
@@ -276,20 +267,17 @@ INSERT INTO `topup_histories` (`id`, `user_id`, `topup_amount`, `topup_date`, `c
 (2, 10, 100000, '2024-09-04', '2024-09-03 20:26:34', '2024-09-03 20:26:34'),
 (3, 10, 60000, '2024-09-04', '2024-09-03 20:27:22', '2024-09-03 20:27:22'),
 (4, 10, 100000, '2024-09-04', '2024-09-03 20:29:17', '2024-09-03 20:29:17'),
+(6, 23, 10000, '2024-09-04', '2024-09-04 08:24:44', '2024-09-04 08:24:44'),
+(7, 23, 10000, '2024-09-04', '2024-09-04 08:24:44', '2024-09-04 08:24:44'),
+(8, 23, 10000, '2024-09-04', '2024-09-04 08:28:24', '2024-09-04 08:28:24'),
+(9, 23, 10000, '2024-09-04', '2024-09-04 08:28:25', '2024-09-04 08:28:25'),
+(10, 23, 10000, '2024-09-04', '2024-09-04 08:34:36', '2024-09-04 08:34:36'),
+(11, 23, 10000, '2024-09-04', '2024-09-04 08:34:37', '2024-09-04 08:34:37'),
 (12, 52, 10000, '2024-09-05', '2024-09-04 20:46:53', '2024-09-04 20:46:53'),
 (13, 52, 10000, '2024-09-05', '2024-09-04 20:46:53', '2024-09-04 20:46:53'),
 (19, 10, 100000, '2024-09-05', '2024-09-04 23:41:43', '2024-09-04 23:41:43'),
 (22, 54, 10000, '2024-09-08', '2024-09-07 19:45:13', '2024-09-07 19:45:13'),
-(23, 54, 10000, '2024-09-08', '2024-09-07 23:20:53', '2024-09-07 23:20:53'),
-(24, 11, 20000, '2024-09-10', '2024-09-09 23:41:27', '2024-09-09 23:41:27'),
-(25, 11, 10000, '2024-09-10', '2024-09-09 23:43:53', '2024-09-09 23:43:53'),
-(26, 11, 10000, '2024-09-11', '2024-09-10 17:56:04', '2024-09-10 17:56:04'),
-(27, 42, 10000, '2024-09-11', '2024-09-10 18:25:12', '2024-09-10 18:25:12'),
-(28, 42, 10000, '2024-09-11', '2024-09-10 18:47:28', '2024-09-10 18:47:28'),
-(29, 42, 10000, '2024-09-11', '2024-09-10 19:01:13', '2024-09-10 19:01:13'),
-(30, 11, 10000, '2024-09-11', '2024-09-10 19:29:13', '2024-09-10 19:29:13'),
-(32, 10, 100000, '2024-09-12', '2024-09-11 18:14:59', '2024-09-11 18:14:59'),
-(33, 11, 10000, '2024-09-12', '2024-09-11 23:26:51', '2024-09-11 23:26:51');
+(23, 54, 10000, '2024-09-08', '2024-09-07 23:20:53', '2024-09-07 23:20:53');
 
 -- --------------------------------------------------------
 
@@ -323,15 +311,15 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `telephone`, `email`, `level`, `email_verification_code`, `email_verified_at`, `password`, `saldo_dana`, `profile_photo`, `alamat`, `banned`, `topup_token`, `created_at`, `updated_at`, `token_expires_at`) VALUES
 (6, 'admin', 'web', '123456789', 'admin@gmail.com', 'admin', NULL, '2024-08-20 20:39:34', '$2a$10$mHYZ9fYIgo2ZJcOEtImyheP2jpSwwhmHIkfegPa/feyg4zZuQa0PK', 0, NULL, 'Jl.Rajawali punggul', 0, NULL, '2024-08-20 06:32:45', '2024-08-20 20:39:34', NULL),
-(10, 'Nando', 'Salam', '0987654321', 'nando@gmail.com', 'user', NULL, '2024-08-20 07:15:27', '$2a$10$dOgqs3ho3eWYkXjpy9GTUOP02qKfaqDRcGD6bqGufTNz0VCCzh.NG', 3120000, 'http://127.0.0.1:8000/upload/1725522279_icon.png', 'Jl.Mangga 1 sruni', 0, NULL, '2024-08-25 06:32:52', '2024-09-11 23:22:07', '2024-09-11 23:37:07'),
-(11, 'Rizal', 'Firmansyah', '0876543214', 'rizal@gmail.com', 'user', NULL, '2024-09-09 23:39:17', '$2a$10$XrYqsALo.UrXtk4V.l7GYeTx9UfdUHkG1PejGNBzI95JM9N.8pVWa', 60000, 'http://127.0.0.1:8000/upload/1726122781_kochoXgiyu.jpg', 'Jl.Manggis no.2', 0, NULL, '2024-08-29 06:33:00', '2024-09-11 23:26:51', NULL),
+(10, 'Nando', 'Salam', '0987654321', 'nando@gmail.com', 'user', NULL, '2024-08-20 07:15:27', '$2a$10$dOgqs3ho3eWYkXjpy9GTUOP02qKfaqDRcGD6bqGufTNz0VCCzh.NG', 3020000, 'http://127.0.0.1:8000/upload/1725522279_icon.png', 'Jl.Mangga 1 sruni', 0, NULL, '2024-08-25 06:32:52', '2024-09-06 22:50:47', NULL),
+(11, 'Rizal', 'Firmansyah', '0987654321', 'rizal@gmail.com', 'user', NULL, NULL, '$2a$10$XrYqsALo.UrXtk4V.l7GYeTx9UfdUHkG1PejGNBzI95JM9N.8pVWa', 0, NULL, 'Jl.Manggis', 0, NULL, '2024-08-29 06:33:00', '2024-09-02 23:03:04', NULL),
 (23, 'Yogi', 'Thiflaini', '0987654321', 'yogithiflaini@gmail.com', 'admin', NULL, '2024-08-21 23:39:38', '$2a$10$vpdXMMMEZk606nMExVKPnuUPIsL6GQdtq/MT67uL5tMZCTAVGBoeS', 0, NULL, 'Jl.Pisang no 25', 0, NULL, '2024-08-23 06:33:09', '2024-09-04 08:34:36', NULL),
 (24, 'Dafa', 'Rafansyah', '0987654321', 'dafarafansyah07@gmail.com', 'user', NULL, '2024-09-03 06:49:48', '$2a$10$r.uJta1Hq1ra8IHI.XDXhOJTk9b2kxg5qQ.RTtJDRfaf6FyHwvEfa', 0, NULL, 'Jl.Diponegoro', 0, NULL, '2024-08-29 06:33:14', '2024-09-06 20:50:31', NULL),
-(42, 'Naufal', 'fian', '081234567', 'naufalfian@gmail.com', 'user', NULL, '2024-08-26 00:29:57', '$2y$10$Q.4vC.htSX1opoNzcNgP1ujXnpRMTaxG5fUmaCkycQINmF2VR7vCe', 30000, 'http://127.0.0.1:8000/upload/1725594245_profil3.jpg', 'Sukodono', 0, NULL, '2024-09-25 06:33:19', '2024-09-10 19:22:45', '2024-09-10 19:37:45'),
-(45, 'zera', 'ansyah', '0812224567', 'akukurus22@gmail.com', 'user', NULL, '2024-09-02 22:10:53', '$2y$10$MRV/V9xXF9fWp8ZMuF7f9.vlsoHSBERShdYTUy883Qv5fvx2HGRnS', 3160000, NULL, 'Jl.Manggis', 1, NULL, '2024-09-01 06:33:41', '2024-09-13 22:07:10', NULL),
+(42, 'Naufal', 'fian', '081234567', 'naufalfian@gmail.com', 'user', NULL, '2024-08-26 00:29:57', '$2y$10$QLbyyoK42usErvTXGgdR5uSvzkCDXHCZwWT/6VAClakorQT6eIn9W', 0, 'http://127.0.0.1:8000/upload/1725594245_profil3.jpg', 'Sukodono', 0, NULL, '2024-09-25 06:33:19', '2024-09-05 20:43:17', NULL),
+(45, 'zera', 'ansyah', '0812224567', 'akukurus22@gmail.com', 'user', NULL, '2024-09-02 22:10:53', '$2y$10$MRV/V9xXF9fWp8ZMuF7f9.vlsoHSBERShdYTUy883Qv5fvx2HGRnS', 5710000, NULL, 'Jl.Manggis', 0, NULL, '2024-09-01 06:33:41', '2024-09-02 22:10:53', NULL),
 (52, 'Purwa', 'akbar', '0987654321', 'purwaarda51@gmail.com', 'user', NULL, '2024-09-04 20:20:22', '$2y$10$r75c5RMAvaLnLaxUZIlQN.g/e8BIF64XDJ5Y3AE5Td1tphIFojO3a', 20000, 'http://127.0.0.1:8000/upload/1725502100_profil.jpg', 'Tebel timur', 1, NULL, '2024-09-04 19:08:20', '2024-09-04 22:57:17', NULL),
 (53, 'Naufal', 'alto', '81234567', 'naufal@gmail.com', 'user', NULL, '2024-09-06 05:45:24', '$2y$10$kgCxcVsZI0U8CCXBUss1e.XjluhY8pTHgf.0ejKrsNDgJ9PEBvvrm', 0, 'http://127.0.0.1:8000/upload/1725626693_icon.png', 'sukodono', 1, NULL, '2024-09-06 05:44:53', '2024-09-06 05:45:24', NULL),
-(54, 'Yogi', 'Erdi', '0822381415', 'ythiflaini@gmail.com', 'user', NULL, '2024-09-10 06:38:41', '$2y$10$5fSfmez9b/iFcReHLwSpIu4nRKyRJHTztyPzGe1eweBYjC5YTpyZ6', 20000, 'http://127.0.0.1:8000/upload/1725686142_avatar4.png', 'Jl.Pisang', 0, NULL, '2024-09-06 22:15:42', '2024-09-10 06:38:41', NULL);
+(54, 'yogi', 'erdi', '0822343281415', 'ythiflaini@gmail.com', 'user', NULL, '2024-09-06 22:16:31', '$2y$10$5fSfmez9b/iFcReHLwSpIu4nRKyRJHTztyPzGe1eweBYjC5YTpyZ6', 20000, 'http://127.0.0.1:8000/upload/1725686142_avatar4.png', 'Jl.Pisang', 0, NULL, '2024-09-06 22:15:42', '2024-09-07 23:20:53', NULL);
 
 --
 -- Indexes for dumped tables
@@ -350,12 +338,6 @@ ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -367,6 +349,13 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`);
 
 --
 -- Indeks untuk tabel `personal_access_tokens`
@@ -405,19 +394,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `account_requests`
 --
 ALTER TABLE `account_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
---
--- AUTO_INCREMENT untuk tabel `comments`
---
-ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -432,28 +415,34 @@ ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT untuk tabel `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT untuk tabel `rentals`
 --
 ALTER TABLE `rentals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT untuk tabel `topup_histories`
 --
 ALTER TABLE `topup_histories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

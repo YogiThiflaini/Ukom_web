@@ -49,7 +49,7 @@ function Rent() {
   const returnDate = useRef("");
   const cancelRef = useRef();
 
-  const { isLoggedIn } = useContext(AuthContext);
+  // const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -86,43 +86,7 @@ function Rent() {
   const handleReturnDateChange = () => calculatePrice();
 
   const handleRentConfirmation = () => {
-    if (!isLoggedIn) {
-      toast({
-        title: "Anda belum login",
-        description: "Silakan login untuk melanjutkan.",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        render: () => (
-          <Box color="white" p={3} bg="blue.500" borderRadius="md">
-            <Text>Anda belum login</Text>
-            <HStack justify="flex-end" spacing={3} mt={3}>
-              <Button
-                size="sm"
-                variant="outline"
-                colorScheme="whiteAlpha"
-                onClick={() => toast.closeAll()}
-              >
-                Kembali
-              </Button>
-              <Button
-                size="sm"
-                colorScheme="teal"
-                onClick={() => {
-                  toast.closeAll();
-                  navigate("/login");
-                }}
-              >
-                Login
-              </Button>
-            </HStack>
-          </Box>
-        ),
-      });
-    } else {
-      setIsDialogOpen(true);
-    }
+    setIsDialogOpen(true);
   };
 
   const rentACar = () => {
@@ -273,7 +237,7 @@ function Rent() {
                   fontSize="2xl"
                   fontWeight={["bold", "extrabold"]}
                 >
-                  RP. {totalPrice.toFixed(2)}
+                  RP. {totalPrice.toLocaleString('id-ID')}
                 </Text>
               </HStack>
               <Button onClick={handleRentConfirmation} w={"full"}>

@@ -6,8 +6,10 @@ const HomePageText = () => {
 
   return (
     <>
-      <Heading size={"2xl"}>
-        <span>{t("homePageText.spanTitle")}</span>
+      <Heading size="2xl"color="blue">
+        <Text as="span" color="orange">
+          {t("homePageText.spanTitle")}
+        </Text>
         {t("homePageText.title")}
       </Heading>
       <Text pr={"10%"}>{t("homePageText.description")}</Text>

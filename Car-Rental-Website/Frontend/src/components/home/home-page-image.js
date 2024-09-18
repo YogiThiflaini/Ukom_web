@@ -8,7 +8,7 @@ const HomePageImage = () => {
           position="absolute"
           alignItems="center"
           borderRadius="2xl"
-          bg="var(--blue-gradient)"
+          bg= "linear-gradient(135deg, #FF69B4, #FFA500, #8A2BE2)"
           top={0}
           bottom={0}
           mx={"10"}
@@ -16,10 +16,11 @@ const HomePageImage = () => {
           minW={"600px"}
         ></Box>
         <Image
-          src="assets/images/ford.webp"
-          top="10vh"
+          src="/images/mobil_home.png"
+          top="20vh"
+          left="-70px"
           position="absolute"
-          minW={"730px"}
+          minW={"750px"}
         />
       </Flex>
     </Hide>

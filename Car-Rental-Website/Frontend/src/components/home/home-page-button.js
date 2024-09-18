@@ -17,7 +17,7 @@ const HomePageButton = () => {
       w="60%"
       fontSize="16px"
       fontWeight="500"
-      bg="orange"
+      bg="linear-gradient(135deg, #FF69B4, #FFA500, #8A2BE2)"
       color="white"
       boxShadow="0px 5px 8px 0px rgba(0,0,0, 0.1)"
       borderRadius="50px"

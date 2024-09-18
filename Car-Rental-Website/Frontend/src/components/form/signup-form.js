@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import bcrypt from "bcryptjs";
 import FormButton from "./form-button";
 import FormInput from "./form-input";
 import { showToast } from "../toast-alert";
@@ -69,22 +68,34 @@ const SignUpForm = () => {
       formData.append("email", email.current.value);
       formData.append("alamat", alamat.current.value);
       formData.append("password", password.current.value);
-      formData.append("profile_photo", profilePhoto.current.files[0]); // Menambahkan file foto profil
-
+      
+      if (profilePhoto.current.files[0]) {
+        formData.append("profile_photo", profilePhoto.current.files[0]); // Menambahkan file foto profil jika ada
+      }
+  
       axios
         .post("http://127.0.0.1:8000/api/signup", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Pastikan header diatur untuk mengirimkan file
           },
         })
-        .then(() => {
-          console.log("Anda sudah berhasil membuat akun");
-          showToast(toast, "Akun anda berhasil dibuat.", "success", "Success");
-          navigate("/verify");
+        .then((response) => {
+          const data = response.data;
+          console.log("Anda sudah berhasil membuat akun", data);
+  
+          // Simpan email dari formData ke localStorage
+          const emailValue = formData.get("email"); // Ambil nilai email dari formData
+          if (emailValue) {
+            localStorage.setItem("email", emailValue); // Menyimpan email di localStorage
+            showToast(toast, "Akun anda berhasil dibuat.", "success", "Success");
+            navigate("/verify");
+          } else {
+            showToast(toast, "Email tidak ditemukan dalam data form.");
+          }
         })
         .catch((error) => showToast(toast, error.response.data.message));
     }
-  };
+  };  
 
   const createUserAcccount = (e) => {
     e.preventDefault();
@@ -93,7 +104,7 @@ const SignUpForm = () => {
 
   return (
     <div className="col-md-6 col-lg-6 p-md-5 px-4 py-5">
-      <form onSubmit={createUserAcccount}>
+      <form onSubmit={createUserAcccount} style={{ maxHeight: '500px', overflowY: 'auto' }}>
         <FormInput name={t("form.firstname")} type="text" refe={firstname} />
         <FormInput name={t("form.lastname")} type="text" refe={lastname} />
         <FormInput name={t("form.telephone")} type="tel" refe={telephone} />
@@ -101,9 +112,9 @@ const SignUpForm = () => {
         <FormInput name={t("form.alamat")} type="text" refe={alamat} />
         <FormInput name={t("form.password")} type="password" refe={password} />
         
-        {/* Tambahkan input untuk upload foto profil */}
+        {/* Tambahkan input untuk upload foto profil (opsional) */}
         <HStack>
-          <FormLabel>Foto Profil: </FormLabel>
+          <FormLabel>Foto Profil (opsional): </FormLabel>
           <Input
             id="profile_photo"
             type="file"

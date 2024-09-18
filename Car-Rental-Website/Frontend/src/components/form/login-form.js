@@ -1,14 +1,14 @@
-import {
-  useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  Button,
-  Link,
-  Textarea,
+import { 
+  useToast, 
+  AlertDialog, 
+  AlertDialogOverlay, 
+  AlertDialogContent, 
+  AlertDialogHeader, 
+  AlertDialogBody, 
+  AlertDialogFooter, 
+  Button, 
+  Link, 
+  Textarea 
 } from "@chakra-ui/react"; // Import Textarea dari Chakra UI
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
@@ -18,6 +18,7 @@ import FormInput from "./form-input";
 import useAuthentication from "../../useAuthentication";
 import { showToast } from "../toast-alert";
 import { useTranslation } from "react-i18next";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -30,9 +31,16 @@ const LoginForm = () => {
   const [alertType, setAlertType] = useState("");
   const [description, setDescription] = useState(""); // State untuk menyimpan deskripsi
   const cancelRef = useRef();
+  const [captchaVerified, setCaptchaVerified] = useState(false); // State untuk melacak status verifikasi captcha
 
   const handleLogin = () => {
-    localStorage.setItem("email",email.current.value);
+    // Cek apakah captcha sudah terverifikasi
+    if (!captchaVerified) {
+      showToast(toast, "Harap selesaikan captcha terlebih dahulu.", "error");
+      return;
+    }
+
+    localStorage.setItem("email", email.current.value);
     if (!email.current.value || !password.current.value) {
       showToast(toast, "Email dan password harus diisi.", "error");
       return;
@@ -55,6 +63,7 @@ const LoginForm = () => {
           localStorage.setItem("lastname", data.lastname);
           localStorage.setItem("telephone", data.telephone);
           localStorage.setItem("email", data.email);
+          localStorage.setItem("saldo_dana", data.saldo_dana);
           localStorage.setItem("alamat", data.alamat);
           localStorage.setItem("level", data.level);
           localStorage.setItem("profile_photo", data.profile_photo);
@@ -133,11 +142,20 @@ const LoginForm = () => {
       });
   };
 
+  const captchaOnChange = (value) => {
+    // Jika captcha sudah diverifikasi, ubah state captchaVerified menjadi true
+    setCaptchaVerified(!!value);
+  };
+
   return (
     <div className="col-md-6 col-lg-6 p-md-5 px-4 py-5">
       <form onSubmit={Login}>
         <FormInput name={t("form.email")} type="email" refe={email} />
         <FormInput name={t("form.password")} type="password" refe={password} />
+        <ReCAPTCHA
+          sitekey="6LfkEjsqAAAAAGYPQVhHcQ4zNehppI3m54tFWIEl"
+          onChange={captchaOnChange}
+        />
         <Link mt={4} colorScheme="blue" onClick={() => navigate("/reset-password")}>
           Lupa Password?
         </Link>
@@ -219,13 +237,10 @@ const LoginForm = () => {
               ) : (
                 <Button
                   colorScheme="blue"
-                  onClick={() => {
-                    setIsAlertOpen(false);
-                    navigate("/signup");
-                  }}
+                  onClick={() => navigate("/signup")}
                   ml={3}
                 >
-                  Buat Akun
+                  Daftar
                 </Button>
               )}
             </AlertDialogFooter>

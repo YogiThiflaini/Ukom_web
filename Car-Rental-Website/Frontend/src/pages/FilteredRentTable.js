@@ -104,7 +104,6 @@ const FilteredRentTable = ({ user_id }) => {
                     <Text>Gearbox: {rent.car.gearbox}</Text>
                     <Text>Harga sewa: Rp. {rent.car.price.toLocaleString('id-ID')}</Text>
                     <Spacer />
-
                     {/* Comment Button */}
                     <CommentModal carId={rent.car_id} email={email} />
                   </VStack>

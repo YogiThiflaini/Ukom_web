@@ -56,6 +56,7 @@ function Rent() {
       .get(`http://127.0.0.1:8000/api/cars/${params.id}`)
       .then((response) => {
         setCar(response.data.data[0]);
+        setTotalPrice(0);
       });
   }, [params.id]);
 

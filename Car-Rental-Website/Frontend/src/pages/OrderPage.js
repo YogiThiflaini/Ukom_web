@@ -145,32 +145,32 @@ useEffect(()=>{
     setRents(filteredRents); // Update data yang sedang ditampilkan
   };  
   
-  // const handleTopUp = () =>{
-  //   navigate('/topup')
-  // }
+  const handleTopUp = () =>{
+    setIsTopUpConfirmOpen(true)
+  }
 
-  const handleTopUp = () => {
-    axios.post(`http://127.0.0.1:8000/api/users/${user_id}/send-topup-token`)
-      .then((response) => {
-        toast({
-          title: "Token terkirim",
-          description: "Token verifikasi telah dikirim ke email Anda.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        setIsTokenPopupOpen(true); // Buka popup untuk masukkan token
-      })
-      .catch((error) => {
-        toast({
-          title: "Gagal mengirim token",
-          description: error.response?.data?.message || "Terjadi kesalahan saat mengirim token.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      });
-  };
+  // const handleTopUp = () => {
+  //   axios.post(`http://127.0.0.1:8000/api/users/${user_id}/send-topup-token`)
+  //     .then((response) => {
+  //       toast({
+  //         title: "Token terkirim",
+  //         description: "Token verifikasi telah dikirim ke email Anda.",
+  //         status: "success",
+  //         duration: 5000,
+  //         isClosable: true,
+  //       });
+  //       setIsTokenPopupOpen(true); // Buka popup untuk masukkan token
+  //     })
+  //     .catch((error) => {
+  //       toast({
+  //         title: "Gagal mengirim token",
+  //         description: error.response?.data?.message || "Terjadi kesalahan saat mengirim token.",
+  //         status: "error",
+  //         duration: 5000,
+  //         isClosable: true,
+  //       });
+  //     });
+  // };
   
 
   const [amount, setAmount] = useState(0);
@@ -316,7 +316,7 @@ useEffect(()=>{
     axios
       .get(`http://127.0.0.1:8000/api/topups/user/${user_id}`)
       .then((response) => {
-        setTopUpHistory(response.data.reverse());
+        setTopUpHistory(response.data);
         setIsTopUpHistoryOpen(true);
       })
       .catch((error) => {
@@ -645,7 +645,8 @@ useEffect(()=>{
                 <Text fontSize="lg" >{t("profile.balance")}: Rp. {balance.toLocaleString('id-ID')}</Text>
                 <HStack mb={6}>
                   <FormLabel >{t("profile.topUpAmount")}:</FormLabel>
-                  <Button mt={1} colorScheme="blue" onClick={handleTopUp}>
+                  <Button
+                   mt={1} colorScheme="blue" onClick={handleTopUp}>
                     {t("profile.topUp")}
                   </Button>
                   <Button colorScheme="teal" onClick={handleShowTopUpHistory}>

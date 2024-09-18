@@ -31,6 +31,9 @@ const Footer = () => {
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={18}>
       
           <Stack >
+          <Image src={"/images/cars.PNG"} alt="Cars" />
+          </Stack>
+          <Stack >
             <ListHeader>Tentang Kami</ListHeader>
             <Link href={"#"}>{t("Alamat")}: Jl. Rajawali, Punggul, Gedangan</Link>
             <Link href={"#"}>{t("Email")}: yogithiflaini@gmail.com</Link>

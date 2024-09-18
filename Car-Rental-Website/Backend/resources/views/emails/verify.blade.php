@@ -108,7 +108,7 @@
                         <td bgcolor="#ffffff" align="center" valign="top"
                             style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
                             <h1 style="font-size: 48px; font-weight: 400; margin: 2; text-align: center; color: #0066CC;">Selamat Datang!</h1> 
-                            <img src="{{ asset('../ren-car.PNG') }}" width="125" height="120" style="display: block; border: 0px; margin: 0 auto;" />
+                            <!-- <img src="{{ asset('http://localhost:8000/images/ren-car.PNG') }}" width="125" height="120" style="display: block; border: 0px; margin: 0 auto;" /> -->
                         </td>
                     </tr>
                 </table>

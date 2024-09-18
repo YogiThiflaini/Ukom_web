@@ -45,6 +45,7 @@ import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
 import Statistics from './RentStatistics';
 import Admin from './Admin';
+import ReviewButton from "../components/ui/ReviewButton";
 
 function Dashboard() {
   const { t } = useTranslation();
@@ -75,7 +76,7 @@ function Dashboard() {
   const cancelRef = useRef();
   // const [selectedButton, setSelectedButton] = useState("Requests");
   const [firstnameFilter, setFirstnameFilter] = useState("");
-  
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     // Reset filters based on the type
@@ -141,6 +142,20 @@ function Dashboard() {
         ]);
         setData(response.data.data);
         setType("cars");
+
+        // Ambil komentar terkait mobil
+        const carIds = response.data.data.map(car => car.id);
+          Promise.all(carIds.map(id => 
+            axios.get(`http://127.0.0.1:8000/api/cars/${id}/comments`)
+          ))
+          .then(responses => {
+            const allComments = responses.flatMap(response => response.data);
+            setComments(allComments);
+            console.log(allComments);
+          })
+          .catch(error => {
+            console.error("Error fetching car comments:", error);
+          });
       }).catch(error => {
         console.error("Error fetching cars:", error);
       });
@@ -638,13 +653,19 @@ function Dashboard() {
                                   />
                                 )}
                                 {type === "cars" && (
+                                  <>
                                   <EditItemDrawer
-                                    dataType={type}
-                                    item={item}
-                                    onUpdate={(updatedItem) =>
-                                      handleUpdateItem(item.id, updatedItem)
-                                    }
+                                  dataType={type}
+                                  item={item}
+                                  onUpdate={(updatedItem) =>
+                                    handleUpdateItem(item.id, updatedItem)
+                                  }
                                   />
+                                  <ReviewButton 
+                                    comments={comments.filter(comment => comment.car_id === item.id)} 
+                                    carId={item.id} 
+                                  />
+                                  </>
                                 )}
                                 {type === "users" && (
                                   <>
@@ -788,13 +809,19 @@ function Dashboard() {
                                   />
                                 )}
                                 {type === "cars" && (
+                                  <>
                                   <EditItemDrawer
-                                    dataType={type}
-                                    item={item}
-                                    onUpdate={(updatedItem) =>
-                                      handleUpdateItem(item.id, updatedItem)
-                                    }
+                                  dataType={type}
+                                  item={item}
+                                  onUpdate={(updatedItem) =>
+                                    handleUpdateItem(item.id, updatedItem)
+                                  }
                                   />
+                                  <ReviewButton 
+                                    comments={comments.filter(comment => comment.car_id === item.id)} 
+                                    carId={item.id} 
+                                  />
+                                  </>
                                 )}
                                 {type === "users" && (
                                   <>

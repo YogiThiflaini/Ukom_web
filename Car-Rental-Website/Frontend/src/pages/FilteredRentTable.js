@@ -15,6 +15,7 @@ import HomeSidebarContent from "../components/home/home-sidebar-content";
 import NavbarLinks from "../components/navbar/NavbarLinks";
 import AvatarMenu from "../components/navbar/avatar-menu";
 import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer";
 
 const FilteredRentTable = ({ user_id }) => {
   const [rents, setRents] = useState([]);
@@ -60,14 +61,14 @@ const FilteredRentTable = ({ user_id }) => {
         links={<NavbarLinks />}
         buttons={<AvatarMenu />}
       />
-      <Box mt="5px" px="10%"> {/* Tambahkan padding untuk memberikan ruang di kanan dan kiri */}
+      <Box mt="5px" px="10%" mb={20}> {/* Tambahkan padding untuk memberikan ruang di kanan dan kiri */}
         <HStack>
           <Heading size="xl" m="25px">Berikan Review Anda</Heading>
           <Spacer />
         </HStack>
 
         {rents.length === 0 ? (
-          <Box textAlign="center" m="20px">Anda belum pernah selesai rental</Box>
+          <Box textAlign="center" m="80px">Anda belum pernah selesai rental</Box>
         ) : (
           <Box
             mt="10px"
@@ -94,6 +95,7 @@ const FilteredRentTable = ({ user_id }) => {
                     boxSize="200px"
                     objectFit="cover"
                     borderRadius="md"
+                    h={"full"}
                     ml={4}
                   />
                   
@@ -113,6 +115,7 @@ const FilteredRentTable = ({ user_id }) => {
           </Box>
         )}
       </Box>
+        <Footer />
     </>
   );
 };

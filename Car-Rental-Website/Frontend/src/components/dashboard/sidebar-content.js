@@ -43,7 +43,7 @@ const SidebarContent = ({ handleData, ...props }) => {
       >
         <Flex px="4" py="5" align="center">
           <Text fontSize="2xl" ml="2" color="white" fontWeight="semibold">
-            <Link to="/home">DAYstore</Link>
+            <Link to="/dashboard" onClick={() => handleData("")}>DAYstore</Link>
           </Text>
         </Flex>
         <Flex

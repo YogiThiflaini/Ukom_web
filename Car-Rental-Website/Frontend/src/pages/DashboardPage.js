@@ -29,6 +29,9 @@ import {
   Select,
   Text,
   Input,
+  Image,
+  Avatar,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons"; 
 import AvatarMenu from "../components/navbar/avatar-menu";
@@ -42,7 +45,7 @@ import { showToast } from "../components/toast-alert";
 import CreateItemDrawer from "../components/dashboard/create-drawer";
 import SearchContext from "../SearchContext";
 import { useTranslation } from "react-i18next";
-import { FaUser } from "react-icons/fa";
+import { FaRegBell, FaUser } from "react-icons/fa";
 import Statistics from './RentStatistics';
 import Admin from './Admin';
 import ReviewButton from "../components/ui/ReviewButton";
@@ -67,16 +70,21 @@ function Dashboard() {
   const [adappFilter, setAdappFilter] = useState("");
   const [cancelFilter, setCancelFilter] = useState("");
   const [createdAtFilter, setCreatedAtFilter] = useState("");
-  const [rentalDateFilter, setRentalDateFilter] = useState("");
-  const [rentalDateRange, setRentalDateRange] = useState({ start: "", end: "" });
+  const [rentalDateFilter, setRentalDateFilter] = useState("");  
+  const [rentalDate, setRentalDate] = useState('');
+  const [returnDate, setReturnDate] = useState('');
   const [createdAtRange, setCreatedAtRange] = useState({ start: "", end: "" });  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(null);
   const cancelRef = useRef();
   // const [selectedButton, setSelectedButton] = useState("Requests");
-  const [firstnameFilter, setFirstnameFilter] = useState("");
+  const [emailFilter, setemailFilter] = useState("");
   const [comments, setComments] = useState([]);
+  const [showOperations, setShowOperations] = useState(false);
+  const [brandFilter, setBrandFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const [levelFilter, setLevelFilter] = useState("");
 
   useEffect(() => {
     // Reset filters based on the type
@@ -89,6 +97,9 @@ function Dashboard() {
     setAppFilter("");
     setAdappFilter("");
     setCancelFilter("");
+    setBrandFilter("");
+    setNameFilter("");
+    setLevelFilter("");
   }, [type]);
 
   const handleButtonClick = (buttonType) => {
@@ -107,11 +118,11 @@ function Dashboard() {
       })
       .then((response) => {
         showToast(toast, response.data.message, "success", "Success");
+        // Update state without refreshing
         setData((prevData) =>
           prevData.map((item) =>
-            item.id === userId ? { ...item, banned: response.data.user.banned } : item
-          )
-        );
+            item.id === userId ? { ...item, banned: newStatus } : item // gunakan newStatus di sini
+          ))
       })
       .catch((error) => {
         showToast(toast, "Error updating banned status", "error", "Error");
@@ -120,11 +131,19 @@ function Dashboard() {
   };
   
   const handleData = (type) => {
+    // Reset data dan header sebelum memuat data baru
+    setData([]);
+    setHeader(["Tunggu Sebentar....."]);
     if (type === "Users") {
       axios.get("http://127.0.0.1:8000/api/users").then((response) => {
-        setHeader(["no", "id", "firstname", "lastname", "telephone", "email", "alamat","level", "saldo_dana"]);
-        setData(response.data.data);
+        setHeader(["no", "id", "profile_photo", "firstname", "lastname", "telephone", "email", "alamat","level", "saldo_dana"]);
+        // Mengurutkan data berdasarkan id
+        const sortedUsers = response.data.data.sort((a, b) => a.id - b.id);
+        setData(sortedUsers);
         setType("users");
+        setTimeout(() => {
+          setShowOperations(true);
+        }, 500);
       }).catch(error => {
         console.error("Error fetching users:", error);
       });
@@ -133,29 +152,36 @@ function Dashboard() {
         setHeader([
           "no",
           "id",
+          "photo2",
           "brand",
           "model",
           "gearbox",
           "fuel_type",
           "price",
+          "kursi",
           "available",
+          "kondisi",
         ]);
-        setData(response.data.data);
+        // Mengurutkan data berdasarkan id
+        const sortedCars = response.data.data.sort((a, b) => a.id - b.id);
+        setData(sortedCars);
         setType("cars");
-
+        setTimeout(() => {
+          setShowOperations(true);
+        }, 500);
+  
         // Ambil komentar terkait mobil
-        const carIds = response.data.data.map(car => car.id);
-          Promise.all(carIds.map(id => 
-            axios.get(`http://127.0.0.1:8000/api/cars/${id}/comments`)
-          ))
-          .then(responses => {
-            const allComments = responses.flatMap(response => response.data);
-            setComments(allComments);
-            console.log(allComments);
-          })
-          .catch(error => {
-            console.error("Error fetching car comments:", error);
-          });
+        const carIds = sortedCars.map(car => car.id);
+        Promise.all(carIds.map(id => 
+          axios.get(`http://127.0.0.1:8000/api/cars/${id}/comments`)
+        ))
+        .then(responses => {
+          const allComments = responses.flatMap(response => response.data);
+          setComments(allComments);
+        })
+        .catch(error => {
+          console.error("Error fetching car comments:", error);
+        });
       }).catch(error => {
         console.error("Error fetching cars:", error);
       });
@@ -166,6 +192,7 @@ function Dashboard() {
           "id",
           "rental_date",
           "return_date",
+          "photo2",
           "price",
           "user_id",
           "email",
@@ -175,13 +202,17 @@ function Dashboard() {
           "returned",
           "cancel",
         ]);
-        setData(response.data.data);
+        // Mengurutkan data berdasarkan id
+        const sortedRents = response.data.data.sort((a, b) => a.id - b.id);
+        setData(sortedRents);
         setType("rents");
+        setTimeout(() => {
+          setShowOperations(true);
+        }, 500);
       }).catch(error => {
         console.error("Error fetching rents:", error);
       });
-    }else if (type === "Historys") {
-      // Assume user_id is available in your state or context
+    } else if (type === "Historys") {
       axios.get(`http://127.0.0.1:8000/api/topups`).then((response) => {
         setHeader([
           "no",
@@ -193,13 +224,17 @@ function Dashboard() {
           "topup_amount",
           "topup_date"
         ]);
-        setData(response.data);
+        // Mengurutkan data berdasarkan id
+        const sortedHistory = response.data.sort((a, b) => a.id - b.id);
+        setData(sortedHistory);
         setType("historys");
+        setTimeout(() => {
+          setShowOperations(true);
+        }, 500);
       }).catch(error => {
         console.error("Error fetching topup history:", error);
       });
-    }else if (type === "Requests") {
-      // Assume user_id is available in your state or context
+    } else if (type === "Requests") {
       axios.get(`http://127.0.0.1:8000/api/requests`).then((response) => {
         setHeader([
           "no",
@@ -209,22 +244,29 @@ function Dashboard() {
           "description",
           "approval"
         ]);
-        setData(response.data.data);
+        // Mengurutkan data berdasarkan id
+        const sortedRequests = response.data.data.sort((a, b) => a.id - b.id);
+        setData(sortedRequests);
         setType("Requests");
+        setTimeout(() => {
+          setShowOperations(true);
+        }, 500);
       }).catch(error => {
         console.error("Error fetching requests data:", error);
       });
-    }else if (type === "") {
-        setHeader([
-          <>
-          <Statistics/>
+    } else if (type === "") {
+      setShowOperations(false);
+      setHeader([
+        <>
+          <Statistics />
           <Admin />
-          </>
-        ]);
-        setData([]);
-        setType("");
+        </>
+      ]);
+      setData([]);
+      setType("");
     }
   };
+  
 
   const handleApproval = (id, statuss) => {
     console.log(`Updating approval for ID ${id} to ${statuss}`);
@@ -249,7 +291,6 @@ function Dashboard() {
     .then(response => {
       console.log('Approval status updated:', response.data);
       
-      // Optionally, update the data in the frontend after approval/rejection
       setData(prevData => prevData.map(item => 
         item.id === id ? { ...item, admin_approval: approvalStatus } : item
       ));
@@ -279,16 +320,34 @@ function Dashboard() {
   const handleUpdateItem = (itemId, updatedItem) => {
     const endpoint = `http://127.0.0.1:8000/api/${type}/${itemId}`;
 
+    // Cari item yang ada dalam data untuk mendapatkan email dan photo2
+    const existingItem = data.find(item => item.id === itemId);
+    
+    // Pastikan email dan photo2 tetap ada dalam updatedItem
+    if (existingItem) {
+        if (existingItem.email) {
+            updatedItem.email = existingItem.email; // Menggunakan email yang sudah ada
+        }
+        if (existingItem.photo2) {
+            updatedItem.photo2 = existingItem.photo2; // Menggunakan photo2 yang sudah ada
+        }
+    }
+
     axios
       .put(endpoint, updatedItem)
       .then((response) => {
         showToast(toast, `${type} updated successfully!`, "success", "Success");
         const updatedData = response.data.data;
 
+        // Gabungkan data baru dengan email dan photo2 yang sudah ada
         setData((prevData) =>
           prevData.map((item) => {
             if (item.id === itemId) {
-              return updatedData;
+              return { 
+                ...updatedData, 
+                email: existingItem?.email,  // Menggabungkan data baru dengan email
+                photo2: existingItem?.photo2 // Menggabungkan data baru dengan photo2
+              };
             }
             return item;
           })
@@ -298,7 +357,8 @@ function Dashboard() {
         showToast(toast, "Error updating item", "error", "Error");
         console.error("Error updating item:", error);
       });
-  };
+};
+
 
   const handleDelete = (id) => {
     setDeletingItemId(id);
@@ -349,8 +409,10 @@ function Dashboard() {
     if (cancelFilter !== "" && item.cancel !== Number(cancelFilter)) return false;
     if (appFilter !== "" && item.approval !== Number(appFilter)) return false;
     if (adappFilter !== "" && item.admin_approval !== Number(adappFilter)) return false;
-    // Filter based on returned
+    if (nameFilter && !(`${item.firstname} ${item.lastname}`.toLowerCase().includes(nameFilter.toLowerCase()))) return false;
     if (returnedFilter && item.returned !== returnedFilter) return false;
+    if (type === "cars" && brandFilter && !item.brand.toLowerCase().includes(brandFilter.toLowerCase())) return false;
+    if (type === "users" && levelFilter && !item.level.toLowerCase().includes(levelFilter.toLowerCase())) return false;
     // Filter based on created_at range
     if (type === "users") {
       if (
@@ -362,16 +424,47 @@ function Dashboard() {
     }
     // Filter based on rental_date range
     if (type === "rents") {
+      // Filter untuk rental_date
       if (
-        rentalDateRange.start &&
-        rentalDateRange.end &&
-        (new Date(item.rental_date) < new Date(rentalDateRange.start) ||
-          new Date(item.rental_date) > new Date(rentalDateRange.end))
+        rentalDate &&
+        new Date(item.rental_date).toDateString() !== new Date(rentalDate).toDateString()
+      ) return false;
+    
+      // Filter untuk return_date
+      if (
+        returnDate &&
+        new Date(item.return_date).toDateString() !== new Date(returnDate).toDateString()
       ) return false;
     }
-    if (firstnameFilter && !item.email.toLowerCase().includes(firstnameFilter.toLowerCase())) return false;
+    if (emailFilter && !item.email.toLowerCase().includes(emailFilter.toLowerCase())) return false;
     return true;
   });
+
+  const handleSendNotification = (rentId) => {
+    axios
+      .post(`http://127.0.0.1:8000/api/rents/${rentId}/send-notification`)
+      .then((response) => {
+        // Menampilkan notifikasi sukses
+        toast({
+          title: "Notifikasi Terkirim",
+          description: "Email notifikasi berhasil dikirim.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        // Menampilkan notifikasi gagal
+        toast({
+          title: "Error",
+          description: "Gagal mengirim notifikasi.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        console.error("Error sending notification:", error);
+      });
+  };  
   
 
   return (
@@ -379,10 +472,10 @@ function Dashboard() {
       <Navbar
         sidebarContent={<SidebarContent handleData={handleData} />}
         buttons={
-          <>
-            <SearchInput type={type.toLowerCase()} />
+          <HStack spacing={4} justifyContent="flex-end" width="100%">
+            {/* <SearchInput type={type.toLowerCase()} /> */}
             <AvatarMenu />
-          </>
+          </HStack>
         }
       />
       <Box as="section" minH="100vh">
@@ -410,8 +503,8 @@ function Dashboard() {
                       <FormLabel htmlFor="firstname">Cari Email Penyewa:</FormLabel>
                       <Input
                         placeholder="Filter berdasarkan email"
-                        value={firstnameFilter}
-                        onChange={(e) => setFirstnameFilter(e.target.value)}
+                        value={emailFilter}
+                        onChange={(e) => setemailFilter(e.target.value)}
                         />
                     </Box>
                     <Box>
@@ -421,7 +514,7 @@ function Dashboard() {
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
                       >
-                      <option value="">All</option>
+                      <option value="">Semua</option>
                       <option value="lunas">Lunas</option>
                       <option value="belum_lunas">Belum Lunas</option>
                       <option value="belum_bayar">Belum Bayar</option>
@@ -434,7 +527,7 @@ function Dashboard() {
                       value={returnedFilter}
                       onChange={(e) => setReturnedFilter(e.target.value)}
                       >
-                      <option value="">All</option>
+                      <option value="">Semua</option>
                       <option value="belum_diambil">Belum Diambil</option>
                       <option value="sedang_disewa">Sedang Disewa</option>
                       <option value="sudah_kembali">Sudah Kembali</option>
@@ -447,44 +540,67 @@ function Dashboard() {
                       value={cancelFilter}
                       onChange={(e) => setCancelFilter(e.target.value)}
                       >
-                      <option value="">All</option>
+                      <option value="">Semua</option>
                       <option value={0}>Jadi Disewa</option>
                       <option value={1}>Dibatalkan</option>
                     </Select>
                     </Box>
                     <Flex mb={4} justify="space-between">
-                    <Box>
-                      <FormLabel htmlFor="rentalStart">Tanggal Rental Dari:</FormLabel>
-                      <Input
-                        type="date"
-                        id="rentalStart"
-                        placeholder="Mulai tanggal rental"
-                        value={rentalDateRange.start}
-                        onChange={(e) => setRentalDateRange((prev) => ({ ...prev, start: e.target.value }))}
+                      {/* Input untuk tanggal rental */}
+                      <Box>
+                        <FormLabel htmlFor="rentalDate">Tanggal Rental:</FormLabel>
+                        <Input
+                          type="date"
+                          id="rentalDate"
+                          placeholder="Pilih tanggal rental"
+                          value={rentalDate}
+                          onChange={(e) => setRentalDate(e.target.value)}
                         />
-                    </Box>
-                    <Box>
-                      <FormLabel htmlFor="rentalEnd">Tanggal Rental Sampai:</FormLabel>
-                      <Input
-                        type="date"
-                        id="rentalEnd"
-                        placeholder="Akhir tanggal rental"
-                        value={rentalDateRange.end}
-                        onChange={(e) => setRentalDateRange((prev) => ({ ...prev, end: e.target.value }))}
+                      </Box>
+                      
+                      {/* Input untuk tanggal pengembalian */}
+                      <Box>
+                        <FormLabel htmlFor="returnDate">Tanggal Pengembalian:</FormLabel>
+                        <Input
+                          type="date"
+                          id="returnDate"
+                          placeholder="Pilih tanggal pengembalian"
+                          value={returnDate}
+                          onChange={(e) => setReturnDate(e.target.value)}
                         />
-                    </Box>
-                  </Flex>
+                      </Box>
+                    </Flex>
                     </>
                     )}
                     {type === "users" && (
                     <>
                     <Box>
+                        <FormLabel htmlFor="name">Cari Nama:</FormLabel>
+                        <Input
+                            placeholder="Filter berdasarkan nama depan atau belakang"
+                            value={nameFilter}
+                            onChange={(e) => setNameFilter(e.target.value)}
+                        />
+                    </Box>
+                    <Box>
                       <FormLabel htmlFor="email">Cari Email Topup:</FormLabel>
                       <Input
                         placeholder="Filter berdasarkan email"
-                        value={firstnameFilter}
-                        onChange={(e) => setFirstnameFilter(e.target.value)}
+                        value={emailFilter}
+                        onChange={(e) => setemailFilter(e.target.value)}
                       />
+                    </Box>
+                    <Box>
+                    <FormLabel htmlFor="level">Level User:</FormLabel>
+                    <Select
+                      placeholder="Filter berdasarkan level"
+                      value={levelFilter}
+                      onChange={(e) => setLevelFilter(e.target.value)}
+                    >
+                      <option value="">Semua</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </Select>
                     </Box>
                     <Flex mb={4} justify="space-between">
                     <Box>
@@ -513,13 +629,21 @@ function Dashboard() {
                     {type === "cars" && (
                     <>
                     <Box>
+                      <FormLabel htmlFor="brand">Cari Merek Mobil:</FormLabel>
+                      <Input
+                          placeholder="Filter berdasarkan brand"
+                          value={brandFilter}
+                          onChange={(e) => setBrandFilter(e.target.value)}
+                      />
+                  </Box>
+                    <Box>
                     <FormLabel htmlFor="gearbox">Tipe Mesin:</FormLabel>
                     <Select
                       placeholder="Filter berdasarkan gearbox"
                       value={gearboxFilter}
                       onChange={(e) => setGearboxFilter(e.target.value)}
                     >
-                      <option value="">All</option>
+                      <option value="">Semua</option>
                       <option value="manual">Manual</option>
                       <option value="automatic">Automatic</option>
                     </Select>
@@ -531,7 +655,7 @@ function Dashboard() {
                       value={fuelFilter}
                       onChange={(e) => setFuelFilter(e.target.value)}
                     >
-                      <option value="">All</option>
+                      <option value="">Semua</option>
                       <option value="bensin">Bensin</option>
                       <option value="diesel">Diesel</option>
                     </Select>
@@ -543,8 +667,8 @@ function Dashboard() {
                     <FormLabel htmlFor="email">Cari Email Topup:</FormLabel>
                     <Input
                       placeholder="Filter berdasarkan email"
-                      value={firstnameFilter}
-                      onChange={(e) => setFirstnameFilter(e.target.value)}
+                      value={emailFilter}
+                      onChange={(e) => setemailFilter(e.target.value)}
                     />
                   </Box>
                   )}
@@ -574,8 +698,8 @@ function Dashboard() {
                         {header.map((title) => (
                           <Th key={title}>{title}</Th>
                         ))}
-                        {type !== ""&&(
-                        <Th>operations</Th>
+                        {type !== ""&& showOperations && type !== "historys"&&(
+                          <Th>operations</Th>
                         )}
                       </Tr>
                     </Thead>
@@ -585,10 +709,12 @@ function Dashboard() {
                             <Tr key={item.id}>
                               <Td>{index + 1}</Td>
                               {header.slice(1).map((column) => {
-                                if (column === "availability") {
+                                if (column === "available") {
                                   return (
                                     <Td key={item.id}>
-                                      {item[column] === 0 ? "yes" : "no"}
+                                      <Text color={item[column] === 1 ? "green.500" : "red.500"}>
+                                      {item[column] === 1 ? "Ya" : "Tidak"}
+                                      </Text>
                                     </Td>
                                   );
                                 } else if (column === "level") {
@@ -602,7 +728,9 @@ function Dashboard() {
                                 } else if (column === "cancel") {
                                   return (
                                     <Td key={item.id}>
-                                      {item.cancel === 0 ? "Menyewa" : "Dibatalkan"}
+                                      <Text color={item.cancel === 0 ? "green.500" : "red.500"}>
+                                        {item.cancel === 0 ? "Menyewa" : "Dibatalkan"}
+                                      </Text>
                                     </Td>
                                   );
                                 } 
@@ -638,20 +766,75 @@ function Dashboard() {
                                     </Td>
                                   );
                                 }
+                                else if (column === "photo2") {
+                                  return (
+                                    <Td key={column}>
+                                      <Image
+                                        src={`${item.photo2}`}
+                                        alt={`Car ${item.brand}`}
+                                        size="md" // You can adjust the size as needed
+                                        h={"full"}
+                                        objectFit="cover"
+                                      />
+                                    </Td>
+                                  );
+                                }
+                                else if (column === "profile_photo") {
+                                  return (
+                                    <Td key={column}>
+                                      <Avatar
+                                          size="md"
+                                          name={`${item.firstname} ${item.lastname}`}
+                                          src={item.profile_photo}
+                                        />
+                                    </Td>
+                                  );
+                                }
+                                else if (column === "kondisi") {
+                                  return (
+                                    <Td key={item.id}>
+                                      <Text color={item[column] === 0 ? "red.500" : "blue.500"}>
+                                      {item[column] === 0 ? "Nonaktif" : "Aktif"}
+                                      </Text>
+                                    </Td>
+                                  );
+                                }
                                 else {
                                   return <Td key={column}>{item[column]}</Td>;
                                 }
                               })}
                               <Td>
-                                {type === "rents" && (
-                                  <EditItemDrawer
-                                    dataType={type}
-                                    item={item}
-                                    onUpdate={(updatedItem) =>
-                                      handleUpdateItem(item.id, updatedItem)
-                                    }
-                                  />
-                                )}
+                              {type === "rents" && (
+  <>
+    {item.cancel === 1 ? (
+      <Text color="red.500" fontWeight="bold">
+        Pesanan Dibatalkan
+      </Text>
+    ) : item.status === "lunas" && item.returned === "sudah_kembali" ? (
+      <Text color="green.500" fontWeight="bold">
+        Transaksi Selesai
+      </Text>
+    ) : (
+      <>
+        <EditItemDrawer
+          dataType={type}
+          item={item}
+          onUpdate={(updatedItem) => handleUpdateItem(item.id, updatedItem)}
+        />
+        <IconButton
+          aria-label="Send Notification"
+          background={"cyan.400"}
+          color={"black.500"}
+          _hover={{ background: "blue.500", color: "white" }}
+          icon={<FaRegBell />}
+          onClick={() => handleSendNotification(item.id)}
+          ml={2}
+        />
+      </>
+    )}
+  </>
+)}
+
                                 {type === "cars" && (
                                   <>
                                   <EditItemDrawer
@@ -697,6 +880,7 @@ function Dashboard() {
                                     />
                                   </>
                                 )}
+                                {type==="cars"&&(
                                 <IconButton
                                   onClick={() => handleDelete(item.id)}
                                   bg=""
@@ -705,6 +889,17 @@ function Dashboard() {
                                   aria-label="Delete"
                                   icon={<DeleteIcon />}
                                 />
+                                )}
+                                {type==="Requests"&&(
+                                <IconButton
+                                  onClick={() => handleDelete(item.id)}
+                                  bg=""
+                                  _hover={{ bg: "red.500", color: "white" }}
+                                  ml={1}
+                                  aria-label="Delete"
+                                  icon={<DeleteIcon />}
+                                />
+                                )}
                               </Td>
                             </Tr>
                           ))
@@ -712,10 +907,12 @@ function Dashboard() {
                             <Tr key={item.id}>
                               <Td>{index + 1}</Td>
                               {header.slice(1).map((column) => {
-                                if (column === "availability") {
+                                if (column === "available") {
                                   return (
                                     <Td key={item.id}>
-                                      {item[column] === 0 ? "yes" : "no"}
+                                      <Text color={item[column] === 1 ? "green.500" : "red.500"}>
+                                      {item[column] === 1 ? "Ya" : "Tidak"}
+                                      </Text>
                                     </Td>
                                   );
                                 } else if (column === "level") {
@@ -729,7 +926,9 @@ function Dashboard() {
                                 } else if (column === "cancel") {
                                   return (
                                     <Td key={item.id}>
-                                      {item.cancel === 0 ? "Menyewa" : "Dibatalkan"}
+                                      <Text color={item.cancel === 0 ? "green.500" : "red.500"}>
+                                        {item.cancel === 0 ? "Menyewa" : "Dibatalkan"}
+                                      </Text>
                                     </Td>
                                   );
                                 } 
@@ -793,21 +992,74 @@ function Dashboard() {
                                       )}
                                     </Td>
                                   );
+                                }else if (column === "photo2") {
+                                  return (
+                                    <Td key={column}>
+                                      <Image
+                                        src={`${item.photo2}`}
+                                        alt={`Car ${item.brand}`}
+                                        size="md" // You can adjust the size as needed
+                                        h={"full"}
+                                        objectFit="cover"
+                                      />
+                                    </Td>
+                                  );
+                                } 
+                                else if (column === "profile_photo") {
+                                  return (
+                                    <Td key={column}>
+                                       <Avatar
+                                          size="md"
+                                          name={`${item.firstname} ${item.lastname}`}
+                                          src={item.profile_photo}
+                                        />
+                                    </Td>
+                                  );
+                                }
+                                else if (column === "kondisi") {
+                                  return (
+                                    <Td key={item.id}>
+                                      <Text color={item[column] === 0 ? "red.500" : "blue.500"}>
+                                      {item[column] === 0 ? "Nonaktif" : "Aktif"}
+                                      </Text>
+                                    </Td>
+                                  );
                                 }
                                  else {
                                   return <Td key={column}>{item[column]}</Td>;
                                 }
                               })}
                               <Td>
-                                {type === "rents" && (
-                                  <EditItemDrawer
-                                    dataType={type}
-                                    item={item}
-                                    onUpdate={(updatedItem) =>
-                                      handleUpdateItem(item.id, updatedItem)
-                                    }
-                                  />
-                                )}
+  {type === "rents" && (
+    <>
+      {item.cancel === 1 ? (
+        <Text color="red.500" fontWeight="bold">
+          Pesanan Dibatalkan
+        </Text>
+      ) : item.status === "lunas" && item.returned === "sudah_kembali" ? (
+        <Text color="green.500" fontWeight="bold">
+          Transaksi Selesai
+        </Text>
+      ) : (
+        <>
+        <EditItemDrawer
+          dataType={type}
+          item={item}
+          onUpdate={(updatedItem) => handleUpdateItem(item.id, updatedItem)}
+        />
+        <IconButton
+          aria-label="Send Notification"
+          background={"cyan.400"}
+          color={"black.500"}
+          _hover={{ background: "blue.500", color: "white" }}
+          icon={<FaRegBell />}
+          onClick={() => handleSendNotification(item.id)}
+          ml={2}
+        />
+      </>
+      )}
+    </>
+  )}
                                 {type === "cars" && (
                                   <>
                                   <EditItemDrawer
@@ -853,6 +1105,7 @@ function Dashboard() {
                                     />
                                   </>
                                 )}
+                                {type==="cars"&&(
                                 <IconButton
                                   onClick={() => handleDelete(item.id)}
                                   bg=""
@@ -861,6 +1114,17 @@ function Dashboard() {
                                   aria-label="Delete"
                                   icon={<DeleteIcon />}
                                 />
+                                )}
+                                {type==="Requests"&&(
+                                <IconButton
+                                  onClick={() => handleDelete(item.id)}
+                                  bg=""
+                                  _hover={{ bg: "red.500", color: "white" }}
+                                  ml={1}
+                                  aria-label="Delete"
+                                  icon={<DeleteIcon />}
+                                />
+                                )}
                               </Td>
                             </Tr>
                           ))}

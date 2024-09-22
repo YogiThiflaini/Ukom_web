@@ -90,3 +90,6 @@ Route::get('cars/{car_id}/comments', [CommentController::class, 'getComments']);
 Route::post('comments', [CommentController::class, 'store']);
 Route::delete('comments/{id}', [CommentController::class, 'destroy']);
 Route::put('/comments/{id}', [CommentController::class, 'update']);
+
+Route::post('/rents/{id}/send-notification', [RentController::class, 'sendNotification']);
+Route::get('/rents/{id}/send-notification', [RentController::class, 'sendNotification']);

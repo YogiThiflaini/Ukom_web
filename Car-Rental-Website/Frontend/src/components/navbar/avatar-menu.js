@@ -50,8 +50,7 @@ const AvatarMenu = () => {
       .get("http://127.0.0.1:8000/api/logout")
       .then((response) => {
         localStorage.clear();
-        window.location.reload();
-        navigate("/");
+        window.location.reload(navigate("/"));
         toast({
           title: "Logout Successful",
           description: "Anda berhasil untuk melakukan logout.",

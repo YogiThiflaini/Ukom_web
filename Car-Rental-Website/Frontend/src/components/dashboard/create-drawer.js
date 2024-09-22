@@ -132,6 +132,11 @@ function CreateItemDrawer({ dataType }) {
               <option value="diesel">diesel</option>
             </Select>
           </Box>
+          
+          <Box>
+            <FormLabel htmlFor="kursi">Kursi</FormLabel>
+            <Input id="kursi" onChange={handleChange} />
+          </Box>
 
           <Box>
             <FormLabel htmlFor="price">Harga</FormLabel>
@@ -150,6 +155,7 @@ function CreateItemDrawer({ dataType }) {
               <option value="0">Tidak</option>
             </Select>
           </Box>
+
         </>
       );
     } else if (dataType === "users") {

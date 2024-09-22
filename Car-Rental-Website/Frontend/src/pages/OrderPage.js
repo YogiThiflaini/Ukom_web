@@ -17,6 +17,7 @@ import {
   Button,
   useToast,
   Input,
+  Image,
   FormControl,
   FormLabel,
   AlertDialog,
@@ -95,7 +96,7 @@ useEffect(()=>{
   .get(`http://127.0.0.1:8000/api/users/${user_id}`)
   .then((response) => {
     setBalance(response.data.data.saldo_dana || 0);
-    console.log(balance);
+    // console.log(balance);
   }
         )
         
@@ -549,6 +550,7 @@ useEffect(()=>{
                 <Thead>
                   <Tr>
                     <Th>No</Th>
+                    <Th>Foto</Th>
                     <Th>{t("profile.brand")}</Th>
                     <Th>{t("profile.model")}</Th>
                     <Th>{t("profile.type")}</Th>
@@ -576,6 +578,15 @@ useEffect(()=>{
                     {rents.map((rent, no) => (
                       <Tr key={rent.id}>
                         <Td>{no + 1}</Td>
+                        <Td>
+                          <Image
+                            src={`${rent.car.photo2}`}
+                            alt={`Car ${rent.car.brand}`}
+                            boxSize="100%" // You can adjust the size as needed
+                            h={"full"}
+                            objectFit="cover"
+                          />
+                        </Td>
                         <Td>{rent.car.brand}</Td>
                         <Td>{rent.car.model}</Td>
                         <Td>{rent.car.fuel_type}</Td>

@@ -10,7 +10,7 @@ class CarController extends Controller
 {
     public function index()
     {
-        $cars = Car::select('id', 'photo1', 'photo2', 'brand', 'model', 'fuel_type', 'price', 'gearbox', 'available')
+        $cars = Car::select('id', 'photo1', 'photo2', 'brand', 'model', 'fuel_type', 'price', 'gearbox', 'available','kursi','kondisi')
             ->get();
         return response()->json(['success' => true, 'data' => $cars], 200);
     }
@@ -33,6 +33,7 @@ class CarController extends Controller
             'fuel_type' => 'required',
             'price' => 'required|numeric',
             'available' => 'required|numeric',
+            'kursi' => 'required|numeric',
         ]);
     
         // Simpan gambar ke direktori 'public/upload' dengan nama yang unik
@@ -51,6 +52,8 @@ class CarController extends Controller
             'fuel_type' => $request->fuel_type,
             'price' => $request->price,
             'available' => $request->available,
+            'kursi' => $request->kursi,
+            'kondisi'=>1,
         ]);
     
         // Beri respons sukses
@@ -62,20 +65,24 @@ class CarController extends Controller
         $car = Car::findOrFail($id); 
 
         $validatedData = $request->validate([
-            'brand' => 'required',
-            'model' => 'required',
-            'gearbox' => 'required',
-            'fuel_type' => 'required',
+            // 'brand' => 'required',
+            // 'model' => 'required',
+            // 'gearbox' => 'required',
+            // 'fuel_type' => 'required',
             'price' => 'required',
+            'kursi' => 'required',
+            'kondisi' => 'required',
             'available' => 'required',
         ]);
 
         DB::table('cars')->where('id', $id)->update([
-            'brand' => $request->input('brand'),
-            'model' => $request->input('model'),
-            'gearbox' => $request->input('gearbox'),
-            'fuel_type' => $request->input('fuel_type'),
+            // 'brand' => $request->input('brand'),
+            // 'model' => $request->input('model'),
+            // 'gearbox' => $request->input('gearbox'),
+            // 'fuel_type' => $request->input('fuel_type'),
             'price' => $request->input('price'),
+            'kursi' => $request->input('kursi'),
+            'kondisi' => $request->input('kondisi'),
             'available' => $request->input('available')
         ]);
 

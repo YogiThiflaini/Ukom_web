@@ -24,7 +24,7 @@ function App() {
   useEffect(()=>{
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 3000);
 
     // Cleanup timer saat komponen di-unmount
     return () => clearTimeout(timer);

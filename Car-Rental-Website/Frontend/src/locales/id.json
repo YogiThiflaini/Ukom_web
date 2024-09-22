@@ -4,11 +4,11 @@
   "navbar.dashboard": "Dashboard",
   "navbar.service" :"Syarat & Ketentuan",
   "homePageText.spanTitle": "Sewa mobil ",
-  "homePageText.title": "dan temukan penawaran menarik bersama kami",
+  "homePageText.title": "dan temukan penawaran menarik bersama kami (Sidoarjo dan sekitarnya)",
   "homePageText.description": "Pilih dari koleksi mobil baru, harga rendah adalah bagian dari penawaran kami sehari-hari.",
   "homePageText.button": "Pesan online sekarang!",
   "featuredVehicles.title": "Mobil Unggulan",
-  "featuredVehicles.description": "Kami telah bekerja dengan pelanggan di sekitar Surabaya.",
+  "featuredVehicles.description": "Kami telah bekerja dengan pelanggan di sekitar Sidoarjo dan Surabaya.",
   "whyChooseUs.title": "Mengapa Memilih Kami",
   "whyChooseUs.description": "Pengalaman menyewa mobil tanpa masalah dengan layanan yang luar biasa dan beragam pilihan mobil.",
   "whyChooseUs.features": [
@@ -30,7 +30,7 @@
     }
   ],
   "clientSpeak.title": "Apa Kata Pelanggan Kami",
-  "clientSpeak.description": "Kami telah bekerja dengan klien di sekitar Surabaya.",
+  "clientSpeak.description": "Kami telah bekerja dengan klien di sekitar Sidoarjo dan Surabaya.",
   "clientSpeak.testimonials": [
     {
       "heading": "Kolaborasi Efisien",

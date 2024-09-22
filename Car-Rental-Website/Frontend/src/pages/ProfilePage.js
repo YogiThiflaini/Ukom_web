@@ -36,7 +36,6 @@ function Profile() {
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    // Ambil data dari localStorage dan set ke state
     const userId = localStorage.getItem("id"); 
     setProfile({
       id: userId,
@@ -45,20 +44,26 @@ function Profile() {
       telephone: localStorage.getItem("telephone"),
       email: localStorage.getItem("email"),
       alamat: localStorage.getItem("alamat"),
-      // saldo_dana: localStorage.getItem("saldo_dana"),
       profile_photo: localStorage.getItem("profile_photo")
     });
     if (userId) {
       axios
-        .get(`http://127.0.0.1:8000/api/users/${userId}`)  // Pastikan ID pengguna digunakan
+        .get(`http://127.0.0.1:8000/api/users/${userId}`)
         .then((response) => {
-          setBalance(response.data.data.saldo_dana || 0); // Set balance dengan saldo dari response
+          setBalance(response.data.data.saldo_dana || 0);
         })
         .catch((error) => {
           console.error("Error fetching balance:", error);
         });
     }
   }, []);
+
+  const updateProfileState = (updatedProfile) => {
+    setProfile((prev) => ({
+      ...prev,
+      ...updatedProfile,
+    }));
+  };
 
   return (
     <>
@@ -81,14 +86,12 @@ function Profile() {
             bg="white"
           >
             <VStack spacing={6}>
-              {/* Foto Profil */}
               <Avatar
                 size="2xl"
                 name={`${profile.firstname} ${profile.lastname}`}
                 src={profile.profile_photo}
               />
               <Divider />
-              {/* Biodata */}
               <Box w="100%">
                 <Grid templateColumns="150px 1fr" gap={2}>
                   <GridItem>
@@ -97,28 +100,24 @@ function Profile() {
                   <GridItem>
                     <Text>{`${profile.firstname} ${profile.lastname}`}</Text>
                   </GridItem>
-
                   <GridItem>
                     <Text fontWeight="bold">Email :</Text>
                   </GridItem>
                   <GridItem>
                     <Text>{profile.email}</Text>
                   </GridItem>
-
                   <GridItem>
                     <Text fontWeight="bold">Telepon :</Text>
                   </GridItem>
                   <GridItem>
                     <Text>{profile.telephone}</Text>
                   </GridItem>
-
                   <GridItem>
                     <Text fontWeight="bold">Alamat :</Text>
                   </GridItem>
                   <GridItem>
                     <Text>{profile.alamat}</Text>
                   </GridItem>
-
                   <GridItem>
                     <Text fontWeight="bold">Saldo anda :</Text>
                   </GridItem>
@@ -128,9 +127,7 @@ function Profile() {
                 </Grid>
               </Box>
               <Divider />
-
-              {/* Tombol Edit Profil */}
-              <ProfileDrawer/>
+              <ProfileDrawer updateProfileState={updateProfileState} />
             </VStack>
           </Box>
         </VStack>

@@ -1,4 +1,4 @@
-import { Box, GridItem, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, GridItem, SimpleGrid, VStack, Select, Input, Text, HStack, Stack } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/navbar/Navbar";
@@ -21,22 +21,24 @@ function BookCars() {
   const [isLoadingVStack, setLoadingVStack] = useState(true);
   const { isLoggedIn } = useAuthentication();
   const [showNavbarContent, setShowNavbarContent] = useState(false);
+  const [rentalData, setRentalData] = useState([]);
+  const [filter, setFilter] = useState("all"); // Default ke "all"
+  const [brandFilter, setBrandFilter] = useState("");
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/cars").then((response) => {
       setCars(response.data.data);
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 3000);
-    
-      return () => clearTimeout(timer);
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     });
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingVStack(false);
-    }, 6500);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -49,6 +51,94 @@ function BookCars() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/api/rents")
+      .then((response) => {
+        const rentalData = response.data.data;
+        if (Array.isArray(rentalData)) {
+          setRentalData(rentalData);
+        } else {
+          console.error("Data rental yang diterima bukan array");
+        }
+      })
+      .catch((error) => console.error("Gagal mengambil data rental", error));
+  }, []);
+
+  // Menghitung mobil yang direkomendasikan
+  // Menghitung mobil yang direkomendasikan dengan mempertimbangkan 'kondisi'
+useEffect(() => {
+  if (rentalData.length > 0 && cars.length > 0) {
+    const rentalCounts = rentalData.reduce((acc, rent) => {
+      acc[rent.car_id] = (acc[rent.car_id] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Hanya cari mobil yang kondisi !== 0
+    const eligibleCars = cars.filter(car => car.kondisi !== 0);
+
+    // Urutkan mobil berdasarkan rental terbanyak
+    const sortedCars = eligibleCars
+      .sort((a, b) => (rentalCounts[b.id] || 0) - (rentalCounts[a.id] || 0))
+      .slice(0, 2) // Ambil 2 mobil dengan rental terbanyak
+
+    // Tandai mobil yang direkomendasikan
+    const updatedCars = cars.map(car => ({
+      ...car,
+      recommended: sortedCars.some(recommendedCar => recommendedCar.id === car.id),
+    }));
+
+    setCars(updatedCars);
+  }
+}, [rentalData, cars]);
+
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const handleBrandInputChange = (e) => {
+    setBrandFilter(e.target.value.toLowerCase());
+  };
+
+  const filteredCars = () => {
+    let filtered = searchResults && searchResults.length > 0 ? [...searchResults] : [...cars];
+  
+    // Filter berdasarkan brand
+    if (brandFilter) {
+      filtered = filtered.filter(car => car.brand.toLowerCase().includes(brandFilter));
+    }
+  
+    // Filter berdasarkan rekomendasi
+    if (filter === "recommended") {
+      filtered = filtered.filter(car => car.recommended);
+    }
+  
+    // Filter berdasarkan harga
+    if (filter === "priceLow") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (filter === "priceHigh") {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+  
+    // Urutkan berdasarkan kepopuleran
+    if (filter === "popularity") {
+      const rentalCounts = rentalData.reduce((acc, rent) => {
+        acc[rent.car_id] = (acc[rent.car_id] || 0) + 1;
+        return acc;
+      }, {});
+  
+      filtered.sort((a, b) => {
+        const aCount = rentalCounts[a.id] || 0;
+        const bCount = rentalCounts[b.id] || 0;
+        return bCount - aCount; // Urutkan dari yang paling banyak disewa
+      });
+    }
+  
+    // Filter mobil dengan kondisi !== 0
+    return filtered.filter(car => car.kondisi !== 0);
+  };
+  
+
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -60,7 +150,7 @@ function BookCars() {
           showNavbarContent &&
           (isLoggedIn ? (
             <>
-              <SearchInput type={"cars"} />
+              {/* <SearchInput type={"cars"} /> */}
               <AvatarMenu />
             </>
           ) : (
@@ -70,29 +160,46 @@ function BookCars() {
       />
       <Box flexGrow={1}>
         {isLoadingVStack ? (
-          <VStack py={10}>
+          <VStack py={10} m={"100px"}>
             <LoadingAnimation />
           </VStack>
         ) : (
           <VStack>
-            <SimpleGrid
-              columns={[1, 1, 2, 2, 3]}
-              rowGap={6}
-              columnGap={8}
-              py={10}
-            >
-              {searchResults && searchResults.length > 0
-                ? searchResults.map((car) => (
-                    <GridItem key={car.id} colSpan={1}>
-                      <CarCard props={car} />
-                    </GridItem>
-                  ))
-                : cars.map((car) => (
+            {/* Input filter berdasarkan brand dan dropdown filter */}
+            <HStack spacing={4} mb={4}>
+              <Input
+                placeholder="Cari berdasarkan brand"
+                value={brandFilter}
+                onChange={handleBrandInputChange}
+              />
+              <Select onChange={handleFilterChange} value={filter}>
+                <option value="all">Tampilkan Semua</option>
+                <option value="recommended">Direkomendasikan</option>
+                <option value="priceLow">Harga: Dari Termurah</option>
+                <option value="priceHigh">Harga: Dari Termahal</option>
+                <option value="popularity">Kepopuleran</option>
+              </Select>
+              <Stack w={"full"}>
+                <Text>Melayani pukul:</Text>
+                <Text>
+                  <Text as="span" color={"green.500"}>09.00 - 15.00</Text> WIB
+                </Text>
+              </Stack>
+            </HStack>
+
+            {filteredCars().length === 0 ? (
+              <Text p={"100px"}>Tidak ada data</Text>
+            ) : (
+              <SimpleGrid columns={[1, 1, 2, 2, 3]} rowGap={6} columnGap={8} py={10}>
+                {filteredCars()
+                  .filter(car => car.kondisi !== 0)  // Filter mobil berdasarkan kondisi
+                  .map((car) => (
                     <GridItem key={car.id} colSpan={1}>
                       <CarCard props={car} />
                     </GridItem>
                   ))}
-            </SimpleGrid>
+              </SimpleGrid>
+            )}
           </VStack>
         )}
       </Box>

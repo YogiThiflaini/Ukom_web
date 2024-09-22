@@ -26,7 +26,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-function ProfileDrawer() {
+function ProfileDrawer({ updateProfileState }) { // Accept the prop
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -39,7 +39,7 @@ function ProfileDrawer() {
     lastname: "",
     telephone: "",
     alamat: "",
-    profile_photo: null, // Add this line
+    profile_photo: null,
   });
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function ProfileDrawer() {
       lastname: localStorage.getItem("lastname"),
       alamat: localStorage.getItem("alamat"),
       telephone: localStorage.getItem("telephone"),
-      profile_photo: null, // Reset photo field
+      profile_photo: null,
     });
   }, []);
 
@@ -61,7 +61,7 @@ function ProfileDrawer() {
   };
 
   const handleSubmit = () => {
-    setIsConfirmOpen(true); // Open confirmation modal
+    setIsConfirmOpen(true);
   };
 
   const confirmUpdate = () => {
@@ -93,8 +93,18 @@ function ProfileDrawer() {
         localStorage.setItem("telephone", updatedUser.telephone);
         localStorage.setItem("alamat", updatedUser.alamat);
         localStorage.setItem("profile_photo", updatedUser.profile_photo);
-        setIsConfirmOpen(false); // Close confirmation modal
-        onClose(); // Close drawer
+
+        // Update the profile state in the parent component
+        updateProfileState({
+          firstname: updatedUser.firstname,
+          lastname: updatedUser.lastname,
+          telephone: updatedUser.telephone,
+          alamat: updatedUser.alamat,
+          profile_photo: updatedUser.profile_photo,
+        });
+
+        setIsConfirmOpen(false);
+        onClose();
       })
       .catch((error) => {
         toast({
@@ -104,7 +114,7 @@ function ProfileDrawer() {
           isClosable: true,
         });
         console.error(error);
-        setIsConfirmOpen(false); // Close confirmation modal
+        setIsConfirmOpen(false);
       });
   };
 

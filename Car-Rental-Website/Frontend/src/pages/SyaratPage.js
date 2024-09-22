@@ -57,6 +57,9 @@ const SyaratPage = () => {
                             <li>Berusia di atas 21 tahun.</li>
                             <li>Memiliki kartu identitas yang valid seperti kartu kredit atau kartu debit.</li>
                             <li>Salinan SIM atau KTP juga diperlukan.</li>
+                            <li>Pengambilan sesuai tanggal sewa jam 09.00 - 15.00 (jika lebih kami anggap batal)</li>
+                            <li>Jika tidak ada kejelasan pengembalian kami akan menghubungi anda</li>
+                            <li>Jika sangat lama pengembalian kami akan melaporkan anda ke pihak berwajib</li>
                         </ul>
                     </Text>
 
@@ -89,7 +92,7 @@ const SyaratPage = () => {
                     </Text>
 
                     <Text fontSize="sm" mb={6}>
-                        Note* : Terakhir diperbarui pada 25 Agustus 2024.
+                        Note* : Terakhir diperbarui pada 20 September 2024.
                     </Text>
                 </VStack>
             </Container>

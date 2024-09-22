@@ -346,6 +346,15 @@ public function validateTopUpToken(Request $request, $user_id)
         DB::table('users')->where('id', $id)->update([
             'banned' => $request->input('banned'),
         ]);    
+
+        // Jika status banned diupdate menjadi 1, update kolom cancel di tabel rent
+        if ($request->input('banned') == 1) {
+            DB::table('rentals')
+                ->where('user_id', $id)
+                ->where('status', 'belum_bayar')
+                ->where('returned', 'belum_diambil')
+                ->update(['cancel' => 1]);
+        }
     
         return response()->json([
             'message' => 'User banned status updated successfully',

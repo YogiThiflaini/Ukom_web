@@ -132,7 +132,7 @@ function EditItemDrawer({ dataType, item, onUpdate }) {
     if (dataType === "cars") {
       return (
         <>
-          <Box>
+          {/* <Box>
             <FormLabel htmlFor="brand">Merek</FormLabel>
             <Input
               ref={firstField}
@@ -169,11 +169,16 @@ function EditItemDrawer({ dataType, item, onUpdate }) {
               <option value="bensin">bensin</option>
               <option value="diesel">diesel</option>
             </Select>
-          </Box>
+          </Box> */}
 
           <Box>
             <FormLabel htmlFor="price">Harga</FormLabel>
             <Input id="price" value={formData.price} onChange={handleChange} />
+          </Box>
+
+          <Box>
+            <FormLabel htmlFor="kursi">Kursi</FormLabel>
+            <Input id="kursi" value={formData.kursi} onChange={handleChange} />
           </Box>
 
           <Box>
@@ -185,6 +190,18 @@ function EditItemDrawer({ dataType, item, onUpdate }) {
             >
               <option value="1">Ya</option>
               <option value="0">Tidak</option>
+            </Select>
+          </Box>
+
+          <Box>
+            <FormLabel htmlFor="kondisi">Kondisi mobil</FormLabel>
+            <Select
+              id="kondisi"
+              value={formData.kondisi}
+              onChange={handleChange}
+            >
+              <option value="1">Aktif</option>
+              <option value="0">Nonaktif</option>
             </Select>
           </Box>
         </>

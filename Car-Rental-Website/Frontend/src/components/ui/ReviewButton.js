@@ -113,7 +113,7 @@ import {
   
     return (
       <>
-        <IconButton aria-label="Lihat Komentar Review" icon={<ChatIcon />} onClick={onOpen} />
+        <IconButton aria-label="Lihat Komentar Review" icon={<ChatIcon />} _hover={{ background: "orange", color:"white"}} onClick={onOpen} />
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -139,12 +139,16 @@ import {
                           <IconButton
                             aria-label="Edit Komentar Review"
                             bg="green"
+                            color="white"
+                            _hover={{ background: "green.400"}}
                             icon={<EditIcon />}
                             onClick={() => handleEditClick(comment)}
                           />
                           <IconButton
                             aria-label="Hapus Komentar Review"
                             bg="red"
+                            color="white"
+                            _hover={{ background: "red.400"}}
                             icon={<DeleteIcon />}
                             onClick={() => handleDeleteClick(comment.id)}
                           />
@@ -179,7 +183,7 @@ import {
               <Button colorScheme="red" mr={3} onClick={confirmDeleteComment}>
                 Hapus
               </Button>
-              <Button variant="ghost" onClick={onDeleteClose}>
+              <Button colorScheme="gray" onClick={onDeleteClose}>
                 Batal
               </Button>
             </ModalFooter>
@@ -202,7 +206,7 @@ import {
               <Button colorScheme="blue" mr={3} onClick={handleEditSubmit}>
                 Simpan
               </Button>
-              <Button variant="ghost" onClick={onEditClose}>
+              <Button colorScheme="gray" onClick={onEditClose}>
                 Batal
               </Button>
             </ModalFooter>

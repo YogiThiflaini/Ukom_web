@@ -69,7 +69,7 @@ function Rent() {
     const return_date = Date.parse(returnDate.current.value);
     const now = new Date().getTime();
 
-    if (rental_date < now || return_date < now || return_date < rental_date) {
+    if (isNaN(rental_date) || isNaN(return_date) || rental_date < now || return_date < now || return_date < rental_date) {
       setTotalPrice(0);
     } else {
       const rentDuration = (return_date - rental_date) / (1000 * 60 * 60 * 24);
@@ -78,7 +78,7 @@ function Rent() {
         setTotalPrice(car.price);
       } else {
         const price = rentDuration * car.price;
-        setTotalPrice(price);
+        setTotalPrice(isNaN(price) ? 0 : price);
       }
     }
   };
@@ -168,7 +168,7 @@ function Rent() {
           overflow={"hidden"}
         >
           <Box w={{ base: "100%", lg: "50%" }}>
-            <Image src={car.photo2} objectFit="cover" h={"full"}></Image>
+            <Image src={car.photo2} objectFit="cover" h={"full"} ></Image>
           </Box>
           <Box w={{ base: "100%", lg: "50%" }} p={"5%"} bg={"white"} h={"full"}>
             <VStack alignItems={"center"} spacing={"3"}>
@@ -241,7 +241,7 @@ function Rent() {
                   RP. {totalPrice.toLocaleString('id-ID')}
                 </Text>
               </HStack>
-              <Button onClick={handleRentConfirmation} w={"full"}>
+              <Button onClick={handleRentConfirmation} w={"full"} _hover={{ background: "gray.700", color: "white" }}>
                 {t("carCard.confirmRent")}
               </Button>
             </VStack>

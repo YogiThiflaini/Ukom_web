@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Rent;
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Mail\RentNotificationMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RentController extends Controller
 {
@@ -16,7 +18,8 @@ class RentController extends Controller
             // Mengambil data dari tabel rents dan users dengan join
             $rents = DB::table('rentals')
                 ->join('users', 'rentals.user_id', '=', 'users.id')
-                ->select('rentals.*', 'users.email', 'users.saldo_dana')
+                ->join('cars', 'rentals.car_id', '=', 'cars.id')
+                ->select('rentals.*', 'users.email', 'users.saldo_dana','cars.photo2')
                 ->get();
 
             return response()->json([
@@ -68,24 +71,24 @@ class RentController extends Controller
     }
 
     // Cek apakah rentang tanggal dan id mobil sudah ada sebelumnya
-    $existingRent = DB::table('rentals')
-        ->where('car_id', $request->input('car_id'))
-        ->where(function ($query) use ($request) {
-            $query->where('rental_date', '>=', $request->input('rental_date'))
-                ->where('rental_date', '<=', $request->input('return_date'))
-                ->orWhere('return_date', '>=', $request->input('rental_date'))
-                ->where('return_date', '<=', $request->input('return_date'))
-                ->orWhere(function ($query) use ($request) {
-                    $query->where('rental_date', '<', $request->input('rental_date'))
-                        ->where('return_date', '>', $request->input('return_date'));
-                });
-        })
-        ->first();
+    // $existingRent = DB::table('rentals')
+    //     ->where('car_id', $request->input('car_id'))
+    //     ->where(function ($query) use ($request) {
+    //         $query->where('rental_date', '>=', $request->input('rental_date'))
+    //             ->where('rental_date', '<=', $request->input('return_date'))
+    //             ->orWhere('return_date', '>=', $request->input('rental_date'))
+    //             ->where('return_date', '<=', $request->input('return_date'))
+    //             ->orWhere(function ($query) use ($request) {
+    //                 $query->where('rental_date', '<', $request->input('rental_date'))
+    //                     ->where('return_date', '>', $request->input('return_date'));
+    //             });
+    //     })
+    //     ->first();
 
     // Jika sudah ada, kembalikan pesan kesalahan
-    if ($existingRent) {
-        return response()->json(['success' => false, 'message' => 'Tanggal dan mobil sudah dipesan orang lain.'], 422);
-    }
+    // if ($existingRent) {
+    //     return response()->json(['success' => false, 'message' => 'Tanggal dan mobil sudah dipesan orang lain.'], 422);
+    // }
 
     // Jika tidak ada, lakukan penyisipan ke dalam tabel rentals
     $rent = DB::table('rentals')->insert([
@@ -137,6 +140,30 @@ class RentController extends Controller
         'data' => $rentsWithBalance
     ]);
 }
+public function sendNotification($rentId)
+{
+    // Ambil data rent berdasarkan ID
+    $rent = Rent::findOrFail($rentId);
+
+    // Ambil data user berdasarkan user_id di tabel rent
+    $user = User::findOrFail($rent->user_id);
+
+    // Tentukan konten pesan berdasarkan status returned
+    if ($rent->returned === 'belum_diambil') {
+        $messageContent = 'Mohon untuk segera mengambil mobil sewaan anda, Terimakasih.';
+    } elseif ($rent->returned === 'sedang_disewa') {
+        $messageContent = 'Mohon untuk segera mengembalikan mobil sewaan agar, Terimakasih.';
+    } else {
+        return response()->json(['message' => 'No email sent.'], 200);
+    }
+
+    // Kirim email menggunakan RentNotificationMail
+    Mail::to($user->email)->send(new RentNotificationMail($user, $messageContent));
+
+    return response()->json(['message' => 'Email sent successfully.'], 200);
+}
+
+
 
     public function update(Request $request, $id)
     {
@@ -173,6 +200,11 @@ class RentController extends Controller
             'pays' => $pays,
             'returned' => $returned,
         ]);
+
+          // Jika 'returned' adalah 'sudah_kembali', update kolom 'available' di tabel 'cars'
+        if ($returned === 'sudah_kembali') {
+            DB::table('cars')->where('id', $rent->car_id)->update(['available' => 1]);
+        }
 
         // Fetch updated rental
         $updatedRent = Rent::findOrFail($id);

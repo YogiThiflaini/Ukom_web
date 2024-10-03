@@ -13,6 +13,8 @@ import SearchContext from "../SearchContext";
 import useAuthentication from "../useAuthentication";
 import NavbarLoginButtons from "../components/navbar/login-buttons";
 import LoadingAnimation from "../components/ui/LoadingAnimation";
+import {Alert, AlertIcon } from "@chakra-ui/react";
+import moment from "moment";
 
 function BookCars() {
   const { searchResults } = useContext(SearchContext);
@@ -24,6 +26,8 @@ function BookCars() {
   const [rentalData, setRentalData] = useState([]);
   const [filter, setFilter] = useState("all"); // Default ke "all"
   const [brandFilter, setBrandFilter] = useState("");
+  const [originalRents, setOriginalRents] = useState([]);
+  const [lateReturns, setLateReturns] = useState([]);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/cars").then((response) => {
@@ -90,6 +94,32 @@ useEffect(() => {
     setCars(updatedCars);
   }
 }, [rentalData, cars]);
+
+useEffect(() => {
+  const user_id = localStorage.getItem("id"); // Ganti dengan user_id yang sesuai
+  if (user_id) {
+    axios
+      .get(`http://127.0.0.1:8000/api/users/${user_id}/rents`)
+      .then((response) => {
+        const rentData = response.data.data;
+        setOriginalRents(rentData); // Simpan data asli
+      })
+      .catch((error) => {
+        console.error("Gagal untuk mengambil data", error);
+      });
+  }
+}, []);
+
+// useEffect untuk mengecek apakah return_date telah lewat dan returned === "sedang_disewa"
+useEffect(() => {
+  const today = moment(); // Menggunakan moment() untuk tanggal hari ini
+  const lateRents = originalRents.filter((rent) => {
+    const returnDate = moment(rent.return_date); // Mengubah return_date menjadi objek moment
+    return rent.returned === "sedang_disewa" && returnDate.isBefore(today); // Cek apakah return_date sebelum hari ini
+  });
+
+  setLateReturns(lateRents); // Simpan data rental yang telat
+}, [originalRents]);
 
 
   const handleFilterChange = (e) => {
@@ -158,6 +188,18 @@ useEffect(() => {
           ))
         }
       />
+      <Box className="box-container" maxWidth="1200px" mx="auto" p={4}>
+      {/* Tampilkan notifikasi jika ada rental yang telat */}
+      {lateReturns.length > 0 && (
+        <Alert status="error" mb={4}>
+          <AlertIcon />
+          <Text>Ada {lateReturns.length} rental yang telat dikembalikan!</Text>
+        </Alert>
+      )}
+
+      {/* Render komponen lain, misalnya daftar mobil */}
+      {/* Your other JSX code here */}
+    </Box>
       <Box flexGrow={1}>
         {isLoadingVStack ? (
           <VStack py={10} m={"100px"}>

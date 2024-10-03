@@ -18,6 +18,7 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { FaPaperPlane } from "react-icons/fa";
 
 function CreateItemDrawer({ dataType }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -247,7 +248,7 @@ function CreateItemDrawer({ dataType }) {
             <Button variant="outline" mr={3} onClick={onClose}>
               Batal
             </Button>
-            <Button colorScheme="green" px={7} onClick={handleSubmit}>
+            <Button colorScheme="green" px={7} onClick={handleSubmit} rightIcon={<FaPaperPlane />}>
               Buat
             </Button>
           </DrawerFooter>

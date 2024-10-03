@@ -80,7 +80,7 @@ const AvatarMenu = () => {
   };
 
   return (
-    <Box px={4}>
+    <Box px={4} zIndex={2}>
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <Flex alignItems={"center"}>
           <Menu>

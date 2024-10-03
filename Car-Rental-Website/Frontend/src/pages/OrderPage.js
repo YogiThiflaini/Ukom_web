@@ -178,35 +178,46 @@ useEffect(()=>{
 
   // const user_id = localStorage.getItem('id');
   const handleTopUps = () => {
-    axios.post(`http://localhost:8000/api/users/${user_id}/update-balance`, { amount })
-      .then(response => {
-        const snapToken = response.data.snapToken;
-        setIsTopUpConfirmOpen(false);
-  
-        window.snap.pay(snapToken, {
-          onSuccess: function(result) {
-            // Jika pembayaran berhasil, panggil API untuk memperbarui saldo
-            axios.post(`http://localhost:8000/api/users/${user_id}/confirm-topup`, { amount })
-              .then(() => {
-                alert("Top-up berhasil!");
-                window.location.reload();
-              })
-              .catch(error => {
-                console.error("Gagal memperbarui saldo:", error);
-                alert("Terjadi kesalahan saat memperbarui saldo.");
-              });
-          },
-          onPending: function(result) {
-            alert("Menunggu pembayaran!");
-          },
-          onError: function(result) {
-            alert("Pembayaran gagal!");
-          }
-        });
-      })
-      .catch(error => {
-        console.error("Terjadi kesalahan saat top-up:", error);
+    if (amount < 10000) {
+      toast({
+        title: "Saldo tidak mencukupi",
+        description: "Saldo yang dimasukkan minimal Rp 10.000 untuk melanjutkan pembayaran.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
       });
+      return; // Menghentikan proses jika saldo kurang dari atau sama dengan 10.000
+    }else{
+      axios.post(`http://localhost:8000/api/users/${user_id}/update-balance`, { amount })
+        .then(response => {
+          const snapToken = response.data.snapToken;
+          setIsTopUpConfirmOpen(false);
+    
+          window.snap.pay(snapToken, {
+            onSuccess: function(result) {
+              // Jika pembayaran berhasil, panggil API untuk memperbarui saldo
+              axios.post(`http://localhost:8000/api/users/${user_id}/confirm-topup`, { amount })
+                .then(() => {
+                  alert("Top-up berhasil!");
+                  window.location.reload();
+                })
+                .catch(error => {
+                  console.error("Gagal memperbarui saldo:", error);
+                  alert("Terjadi kesalahan saat memperbarui saldo.");
+                });
+            },
+            onPending: function(result) {
+              alert("Menunggu pembayaran!");
+            },
+            onError: function(result) {
+              alert("Pembayaran gagal!");
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Terjadi kesalahan saat top-up:", error);
+        });
+    }
   };  
 
   const handlePayment = (rentId) => {
@@ -215,56 +226,67 @@ useEffect(()=>{
   };
 
   const confirmPayment = () => {
-    if (user_id && paymentRentId && paymentAmount) {
-      const rent = rents.find(r => r.id === paymentRentId);
-      if (rent) {
-        const amountToPay = Math.min(parseFloat(paymentAmount), rent.price);
-        const remainingBalance = balance - amountToPay;
-  
-        if (amountToPay <= balance) {
-          axios
-            .post(`http://127.0.0.1:8000/api/rents/${paymentRentId}/pay`, { amount: amountToPay })
-            .then((response) => {
-              console.log("Response after balance update:", response);
-              setRents((prevRents) => prevRents.map(rent => rent.id === paymentRentId ? { ...rent, pays: amountToPay } : rent));
-              setBalance(response.data.balance || 0);
-              toast({
-                title: "Pembayaran berhasil",
-                description: "Pembayaran telah berhasil diproses.",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
+    if (paymentAmount < 10000) {
+      toast({
+        title: "Saldo tidak mencukupi",
+        description: "Saldo yang dimasukkan minimal Rp 10.000 untuk melanjutkan pembayaran.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+      return; // Menghentikan proses jika saldo kurang dari atau sama dengan 10.000
+    } else{
+      if (user_id && paymentRentId && paymentAmount) {
+        const rent = rents.find(r => r.id === paymentRentId);
+        if (rent) {
+          const amountToPay = Math.min(parseFloat(paymentAmount), rent.price);
+          const remainingBalance = balance - amountToPay;
+    
+          if (amountToPay <= balance) {
+            axios
+              .post(`http://127.0.0.1:8000/api/rents/${paymentRentId}/pay`, { amount: amountToPay })
+              .then((response) => {
+                console.log("Response after balance update:", response);
+                setRents((prevRents) => prevRents.map(rent => rent.id === paymentRentId ? { ...rent, pays: amountToPay } : rent));
+                setBalance(response.data.balance || 0);
+                toast({
+                  title: "Pembayaran berhasil",
+                  description: "Pembayaran telah berhasil diproses.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+                setPaymentAmount('');
+                setTimeout(() => {
+                  window.location.reload();
+                }, 3000);
+              })
+              .catch((error) => {
+                console.error("Gagal untuk melakukan pembayaran atau memperbarui saldo", error);
+                toast({
+                  title: "Gagal melakukan pembayaran",
+                  description: "Tidak bisa melakukan pembayaran atau memperbarui saldo. Silahkan coba lagi nanti",
+                  status: "error",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              })
+              .finally(() => {
+                setIsPaymentConfirmOpen(false);
+                setPaymentRentId(null);
+                if (amountToPay >= rent.price) {
+                  setIsFullyPaid(true); // Show fully paid popup
+                }
               });
-              setPaymentAmount('');
-              // Redirect and refresh the page
-              // navigate('/order');
-              window.location.reload();
-            })
-            .catch((error) => {
-              console.error("Gagal untuk melakukan pembayaran atau memperbarui saldo", error);
-              toast({
-                title: "Gagal melakukan pembayaran",
-                description: "Tidak bisa melakukan pembayaran atau memperbarui saldo. Silahkan coba lagi nanti",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-              });
-            })
-            .finally(() => {
-              setIsPaymentConfirmOpen(false);
-              setPaymentRentId(null);
-              if (amountToPay >= rent.price) {
-                setIsFullyPaid(true); // Show fully paid popup
-              }
+          } else {
+            toast({
+              title: "Pembayaran gagal",
+              description: "Jumlah pembayaran melebihi saldo.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
             });
-        } else {
-          toast({
-            title: "Pembayaran gagal",
-            description: "Jumlah pembayaran melebihi saldo.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
+          }
         }
       }
     }
@@ -358,6 +380,18 @@ useEffect(()=>{
         });
         return;
       }
+      else if (totalAmountToPay === 0) { // Perbaikan operator perbandingan
+        toast({
+          title: "Tidak ada pembayaran",
+          description: "Tidak ada rental yang dibayar saat ini.",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+    
+      handleClosePopup(); 
     
       axios
         .post(`http://127.0.0.1:8000/api/rents/pay-all`, { user_id, unpaidRents })
@@ -368,10 +402,12 @@ useEffect(()=>{
             title: "Pembayaran Berhasil",
             description: "Semua pembayaran telah berhasil diproses.",
             status: "success",
-            duration: 5000,
+            duration: 3000,
             isClosable: true,
           });
-          // navigate('/order');
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 3000);
           window.location.reload();
         })
         .catch((error) => {

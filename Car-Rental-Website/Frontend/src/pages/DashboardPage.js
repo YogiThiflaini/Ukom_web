@@ -49,6 +49,8 @@ import { FaRegBell, FaUser } from "react-icons/fa";
 import Statistics from './RentStatistics';
 import Admin from './Admin';
 import ReviewButton from "../components/ui/ReviewButton";
+import { useCallback } from 'react';
+import { debounce } from 'lodash';
 
 function Dashboard() {
   const { t } = useTranslation();
@@ -107,28 +109,30 @@ function Dashboard() {
     handleData(buttonType);
   };
 
-  const handleUpdateBannedStatus = (userId, currentStatus) => {
-    console.log(currentStatus);
-    // Toggle banned status: if current status is 0, set to 1; if 1, set to 0
-    const newStatus = currentStatus === 0 ? 1 : 0;
+  const handleUpdateBannedStatus = useCallback(
+    debounce((userId, currentStatus) => {
+      console.log(currentStatus);
+      const newStatus = currentStatus === 0 ? 1 : 0;
   
-    axios
-      .put(`http://127.0.0.1:8000/api/users/${userId}/update-banned-status`, {
-        banned: newStatus,
-      })
-      .then((response) => {
-        showToast(toast, response.data.message, "success", "Success");
-        // Update state without refreshing
-        setData((prevData) =>
-          prevData.map((item) =>
-            item.id === userId ? { ...item, banned: newStatus } : item // gunakan newStatus di sini
-          ))
-      })
-      .catch((error) => {
-        showToast(toast, "Error updating banned status", "error", "Error");
-        console.error("Error updating banned status:", error);
-      });
-  };
+      axios
+        .put(`http://127.0.0.1:8000/api/users/${userId}/update-banned-status`, {
+          banned: newStatus,
+        })
+        .then((response) => {
+          showToast(toast, response.data.message, "success", "Success");
+          setData((prevData) =>
+            prevData.map((item) =>
+              item.id === userId ? { ...item, banned: newStatus } : item
+            )
+          );
+        })
+        .catch((error) => {
+          showToast(toast, "Error updating banned status", "error", "Error");
+          console.error("Error updating banned status:", error);
+        });
+    }, 300), // Delay 300ms
+    []
+  );
   
   const handleData = (type) => {
     // Reset data dan header sebelum memuat data baru
@@ -336,7 +340,7 @@ function Dashboard() {
     axios
       .put(endpoint, updatedItem)
       .then((response) => {
-        showToast(toast, `${type} updated successfully!`, "success", "Success");
+        showToast(toast, `${type} tabel telah diupdate!`, "success", "Success");
         const updatedData = response.data.data;
 
         // Gabungkan data baru dengan email dan photo2 yang sudah ada
@@ -354,7 +358,7 @@ function Dashboard() {
         );
       })
       .catch((error) => {
-        showToast(toast, "Error updating item", "error", "Error");
+        showToast(toast, "Error untuk update", "error", "Error");
         console.error("Error updating item:", error);
       });
 };
@@ -371,13 +375,13 @@ function Dashboard() {
     axios
       .delete(endpoint)
       .then((response) => {
-        showToast(toast, `${type} deleted successfully!`, "success", "Success");
+        showToast(toast, `${type} berhasil diperbarui!`, "success", "Success");
         setData((prevData) => prevData.filter((item) => item.id !== deletingItemId));
         setIsAlertOpen(false);
         setDeletingItemId(null);
       })
       .catch((error) => {
-        showToast(toast, "Error deleting item", "error", "Error");
+        showToast(toast, "Gagal dalam menghapus item", "error", "Error");
         console.error("Error deleting item:", error);
         setIsAlertOpen(false);
         setDeletingItemId(null);
@@ -388,7 +392,7 @@ function Dashboard() {
     axios
       .put(`http://127.0.0.1:8000/api/users/${userId}`, { level: newRole })
       .then((response) => {
-        showToast(toast, "User level updated successfully!", "success", "Success");
+        showToast(toast, "User level berhasil diupdate!", "success", "Success");
         setData((prevData) =>
           prevData.map((item) =>
             item.id === userId ? { ...item, level: newRole } : item
@@ -396,7 +400,7 @@ function Dashboard() {
         );
       })
       .catch((error) => {
-        showToast(toast, "Error updating user level", "error", "Error");
+        showToast(toast, "Error saat update user level", "error", "Error");
         console.error("Error updating user level:", error);
       });
   };
@@ -436,7 +440,9 @@ function Dashboard() {
         new Date(item.return_date).toDateString() !== new Date(returnDate).toDateString()
       ) return false;
     }
+    if (type === "rents" || type === "users" || type === "historys" ) {
     if (emailFilter && !item.email.toLowerCase().includes(emailFilter.toLowerCase())) return false;
+    }
     return true;
   });
 

@@ -24,6 +24,7 @@ import {
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { FaSave } from "react-icons/fa";
 
 function EditItemDrawer({ dataType, item, onUpdate }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -373,13 +374,13 @@ function EditItemDrawer({ dataType, item, onUpdate }) {
             </Stack>
           </DrawerBody>
           <DrawerFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit} leftIcon={<FaSave/>}>
               Simpan
             </Button>
             <Button variant="outline" onClick={onClose}>
               Batal
             </Button>
-            {dataType && (
+            {/* {dataType && (
               <Button
                 ml={4}
                 colorScheme="red"
@@ -388,7 +389,7 @@ function EditItemDrawer({ dataType, item, onUpdate }) {
               >
                 Hapus
               </Button>
-            )}
+            )} */}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
